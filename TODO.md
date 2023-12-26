@@ -7,16 +7,16 @@
   - [x] IncidentUpdate
   - [x] OpsGenieAlert
   - [x] Configuration
-- [ ] Slack integration bootstrapping
 - [x] Django admin
 - [ ] Page rendering
   - [x] Current status
   - [ ] History
   - [x] Incident detail page
   - [x] Markdown support
-  - [ ] Use user timezone
+  - [x] Use user timezone
   - [ ] Mobile style
   - [ ] RSS?
+- [ ] Slack integration bootstrapping
 - [ ] OpsGenie incoming webhook → Slack message
   - [ ] deduplicate incidents
   - [ ] Slack option "add update"

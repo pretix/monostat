@@ -10,11 +10,6 @@ class ThemeCSSView(TemplateView):
     template_name = "public/theme.css.tpl"
     content_type = "text/css"
 
-    def get_context_data(self, **kwargs):
-        return super().get_context_data(
-            config=SiteConfiguration.get_solo(),
-        )
-
 
 class IndexView(TemplateView):
     template_name = "public/index.html"
@@ -36,7 +31,6 @@ class IndexView(TemplateView):
         ).prefetch_related("updates")
 
         return super().get_context_data(
-            config=SiteConfiguration.get_solo(),
             planned_incidents=planned_incidents,
             current_incidents=current_incidents,
             confirmed_severities={
@@ -64,8 +58,3 @@ class IncidentDetailView(DetailView):
         ):
             raise Http404("Incident not found on this date")
         return obj
-
-    def get_context_data(self, **kwargs):
-        return super().get_context_data(
-            config=SiteConfiguration.get_solo(),
-        )

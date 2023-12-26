@@ -32,11 +32,11 @@
             <p class="secondary meta">
                 <a href="{{ incident.get_absolute_url }}" class="detail-link">
                     {% if incident.start and incident.end %}
-                        <time datetime="{{ incident.start.isoformat }}">{{ incident.start|date:"SHORT_DATETIME_FORMAT" }}</time>
+                        <time datetime="{{ incident.start.isoformat }}">{{ incident.start|date:"DATETIME_FORMAT" }} {{ tz }}</time>
                         –
-                        <time datetime="{{ incident.end.isoformat }}">{{ incident.end|date:"SHORT_DATETIME_FORMAT" }}</time>
+                        <time datetime="{{ incident.end.isoformat }}">{{ incident.end|date:"DATETIME_FORMAT" }} {{ tz }}</time>
                     {% else %}
-                        <time datetime="{{ incident.start.isoformat }}">{{ incident.start|date:"SHORT_DATETIME_FORMAT" }}</time>
+                        <time datetime="{{ incident.start.isoformat }}">{{ incident.start|date:"DATETIME_FORMAT" }} {{ tz }}</time>
                     {% endif %}
                 </a>
             </p>
@@ -81,7 +81,7 @@
             <div class="incident-content-col">
                 {{ u.message|rich_text }}
                 <p class="secondary meta">
-                    <time datetime="{{ u.created.isoformat }}">{{ u.created|date:"SHORT_DATETIME_FORMAT" }}</time>
+                    <time datetime="{{ u.created.isoformat }}">{{ u.created|date:"DATETIME_FORMAT" }} {{ tz }}</time>
                 </p>
             </div>
         </div>
