@@ -12,7 +12,7 @@
 - [ ] Page rendering
   - [x] Current status
   - [ ] History
-  - [ ] Incident detail page
+  - [x] Incident detail page
   - [x] Markdown support
   - [ ] Use user timezone
   - [ ] Mobile style
@@ -37,3 +37,4 @@
 - [ ] Widget for 500 pages
 - [ ] Widget for pretix backend
 - [ ] Public API
+- [ ] 404/401/500 page

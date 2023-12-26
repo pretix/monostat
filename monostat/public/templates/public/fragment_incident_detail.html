@@ -30,13 +30,15 @@
         </div>
         <div class="incident-content-col">
             <p class="secondary meta">
-                {% if incident.start and incident.end %}
-                    <time datetime="{{ incident.start.isoformat }}">{{ incident.start|date:"SHORT_DATETIME_FORMAT" }}</time>
-                    –
-                    <time datetime="{{ incident.end.isoformat }}">{{ incident.end|date:"SHORT_DATETIME_FORMAT" }}</time>
-                {% else %}
-                    <time datetime="{{ incident.start.isoformat }}">{{ incident.start|date:"SHORT_DATETIME_FORMAT" }}</time>
-                {% endif %}
+                <a href="{{ incident.get_absolute_url }}" class="detail-link">
+                    {% if incident.start and incident.end %}
+                        <time datetime="{{ incident.start.isoformat }}">{{ incident.start|date:"SHORT_DATETIME_FORMAT" }}</time>
+                        –
+                        <time datetime="{{ incident.end.isoformat }}">{{ incident.end|date:"SHORT_DATETIME_FORMAT" }}</time>
+                    {% else %}
+                        <time datetime="{{ incident.start.isoformat }}">{{ incident.start|date:"SHORT_DATETIME_FORMAT" }}</time>
+                    {% endif %}
+                </a>
             </p>
         </div>
     </div>
@@ -54,7 +56,7 @@
         <div class="incident-item">
             <div class="incident-timeline-col">
             </div>
-            <div class="incident-content-col secondary">
+            <div class="incident-content-col">
                 {{ incident.summary|rich_text }}
             </div>
         </div>
@@ -76,7 +78,7 @@
                     <div class="incident-timeline-bubble"></div>
                 {% endif %}
             </div>
-            <div class="incident-content-col secondary">
+            <div class="incident-content-col">
                 {{ u.message|rich_text }}
                 <p class="secondary meta">
                     <time datetime="{{ u.created.isoformat }}">{{ u.created|date:"SHORT_DATETIME_FORMAT" }}</time>

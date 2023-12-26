@@ -37,9 +37,9 @@ else:
 debug_default = "runserver" in sys.argv or "runserver_plus" in sys.argv
 DEBUG = os.environ.get("MONOSTAT_DEBUG", str(debug_default)) == "True"
 
-SITE_URL = os.getenv('MONOSTAT_SITE_URL', 'http://localhost')
-if SITE_URL == 'http://localhost':
-    ALLOWED_HOSTS = ['*']
+SITE_URL = os.getenv("MONOSTAT_SITE_URL", "http://localhost")
+if SITE_URL == "http://localhost":
+    ALLOWED_HOSTS = ["*"]
 else:
     ALLOWED_HOSTS = [urlparse(SITE_URL).netloc]
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

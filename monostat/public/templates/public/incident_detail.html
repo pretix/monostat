@@ -1,0 +1,28 @@
+{% extends "public/base.html" %}
+{% load i18n %}
+{% block content %}
+    {% if incident.status == "dismissed" %}
+        <div class="incident-dismissed">
+            <p>
+                <span class="fa fa-bell-slash-o fa-4x secondary"></span>
+            </p>
+            <h2>{% trans "Incident closed" %}</h2>
+            <p>{% trans "This incident was a false alarm." %}</p>
+            <p>
+                <a href="{% url "public:index" %}">{% trans "View current system status" %}</a>
+            </p>
+        </div>
+    {% else %}
+        {% if incident.severity == "maintenance" %}
+            <h2>{% trans "System maintenance" %}</h2>
+        {% elif incident.severity == "notice" %}
+            <h2>{% trans "System notice" %}</h2>
+        {% else %}
+            <h2>{% trans "System incident" %}</h2>
+        {% endif %}
+        {% include "public/fragment_incident_detail.html" %}
+    {% endif %}
+    <p class="back-nav">
+        <a href="{% url "public:index" %}">{% trans "View current system status" %}</a>
+    </p>
+{% endblock %}

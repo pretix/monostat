@@ -172,9 +172,22 @@ article.incident .incident-content-col p.meta {
     font-style: italic;
     font-size: 14px;
 }
+article.incident .incident-content-col p.meta a.detail-link {
+    color: var(--secondary-text-color);
+    text-decoration: none;
+}
+article.incident .incident-content-col p.meta a.detail-link:hover {
+    text-decoration: underline;
+}
 article.incident .incident-item:last-child .incident-content-col p:last-child {
     margin-bottom: 0;
 }
 article.incident .incident-item:last-child .incident-content-col {
     margin-bottom: 0;
+}
+.incident-dismissed {
+    text-align: center;
+}
+.back-nav {
+    margin-top: 25px;
 }
