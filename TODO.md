@@ -13,7 +13,7 @@
   - [x] Current status
   - [ ] History
   - [ ] Incident detail page
-  - [ ] Markdown support
+  - [x] Markdown support
   - [ ] Use user timezone
   - [ ] Mobile style
   - [ ] RSS?

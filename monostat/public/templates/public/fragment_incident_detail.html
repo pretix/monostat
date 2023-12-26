@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load rich_text %}
 <article class="incident">
     <div class="incident-header">
         <div class="incident-timeline-col">
@@ -53,10 +54,8 @@
         <div class="incident-item">
             <div class="incident-timeline-col">
             </div>
-            <div class="incident-content-col">
-                <p class="secondary">
-                    {{ incident.summary }}
-                </p>
+            <div class="incident-content-col secondary">
+                {{ incident.summary|rich_text }}
             </div>
         </div>
     {% endif %}
@@ -77,10 +76,8 @@
                     <div class="incident-timeline-bubble"></div>
                 {% endif %}
             </div>
-            <div class="incident-content-col">
-                <p class="secondary">
-                    {{ u.message }}
-                </p>
+            <div class="incident-content-col secondary">
+                {{ u.message|rich_text }}
                 <p class="secondary meta">
                     <time datetime="{{ u.created.isoformat }}">{{ u.created|date:"SHORT_DATETIME_FORMAT" }}</time>
                 </p>
