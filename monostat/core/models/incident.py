@@ -36,11 +36,17 @@ class Incident(models.Model):
     class Meta:
         verbose_name = _("Incident")
         verbose_name_plural = _("Incidents")
+        ordering = ("-start", "-pk")
+
+    def __str__(self):
+        return self.title
 
 
 class IncidentUpdate(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    incident = models.ForeignKey(Incident, on_delete=models.CASCADE)
+    incident = models.ForeignKey(
+        Incident, on_delete=models.CASCADE, related_name="updates"
+    )
     new_status = models.CharField(
         choices=Incident.Status,
         max_length=50,
@@ -52,11 +58,14 @@ class IncidentUpdate(models.Model):
     class Meta:
         verbose_name = _("Incident update")
         verbose_name_plural = _("Incident updates")
+        ordering = ("-created", "-pk")
 
 
 class IncomingAlert(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    incident = models.ForeignKey(Incident, on_delete=models.CASCADE)
+    incident = models.ForeignKey(
+        Incident, on_delete=models.CASCADE, related_name="incoming_alerts"
+    )
     resolved = models.DateTimeField(null=True, blank=True)
     message = models.TextField(null=True, blank=True)
     external_id = models.CharField(max_length=190, db_index=True)
@@ -64,3 +73,4 @@ class IncomingAlert(models.Model):
     class Meta:
         verbose_name = _("Incoming alert")
         verbose_name_plural = _("Incoming alerts")
+        ordering = ("-created", "-pk")

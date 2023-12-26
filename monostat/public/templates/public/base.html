@@ -1,0 +1,43 @@
+{% load i18n %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% url "public:theme.css" %}">
+    {# TODO compress #}
+    <link rel="stylesheet" href="{% static "public/reboot.css" %}">
+    <link rel="stylesheet" href="{% static "public/fonts.css" %}">
+    <link rel="stylesheet" href="{% static "public/fork-awesome.css" %}">
+    <link rel="stylesheet" href="{% static "public/main.css" %}">
+    <title>{% block title %}{% blocktrans with system=config.system_name %}{{ system }} System Status
+    {% endblocktrans %}{% endblock %}</title>
+</head>
+<body>
+<header>
+    <div class="container">
+        <a class="brand" href="{% url "public:index" %}">
+            <img src="{{ config.logo.url }}" height="52" class="logo" alt="{{ config.system_name }}">
+            {% trans "System Status" %}
+        </a>
+        <div class="gap"></div>
+        <nav class="main-nav">
+            <a href="{% url "public:index" %}">
+                {% trans "Current status" %}
+            </a>
+        </nav>
+    </div>
+</header>
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+<footer>
+    <div class="container">
+        <a href="{{ config.legal_url }}" target="_blank">{% trans "Legal notice" %}</a> ·
+        <a href="{{ config.privacy_url }}" target="_blank">{% trans "Privacy" %}</a>
+    </div>
+</footer>
+</body>
+</html>

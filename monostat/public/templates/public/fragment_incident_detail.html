@@ -1,0 +1,90 @@
+{% load i18n %}
+<article class="incident">
+    <div class="incident-header">
+        <div class="incident-timeline-col">
+            {% if incident.status == "planned" %}
+                <span class="fa fa-clock-o secondary" aria-hidden="true"></span>
+            {% elif incident.status == "watching" %}
+                <span class="fa fa-eye color-info" aria-hidden="true"></span>
+            {% elif incident.status == "resolved" %}
+                <span class="fa fa-check-circle color-success" aria-hidden="true"></span>
+            {% elif incident.severity == "outage" %}
+                <span class="fa fa-minus-circle color-danger" aria-hidden="true"></span>
+            {% elif incident.severity == "partial" %}
+                <span class="fa fa-warning color-warning" aria-hidden="true"></span>
+            {% elif incident.severity == "bug" %}
+                <span class="fa fa-bug color-warning" aria-hidden="true"></span>
+            {% elif incident.severity == "notice" %}
+                <span class="fa fa-info-circle color-info" aria-hidden="true"></span>
+            {% elif incident.severity == "maintenance" %}
+                <span class="fa fa-wrench color-info" aria-hidden="true"></span>
+            {% endif %}
+        </div>
+        <h3>
+            {{ incident.title }}
+        </h3>
+    </div>
+    <div class="incident-item">
+        <div class="incident-timeline-col">
+        </div>
+        <div class="incident-content-col">
+            <p class="secondary meta">
+                {% if incident.start and incident.end %}
+                    <time datetime="{{ incident.start.isoformat }}">{{ incident.start|date:"SHORT_DATETIME_FORMAT" }}</time>
+                    –
+                    <time datetime="{{ incident.end.isoformat }}">{{ incident.end|date:"SHORT_DATETIME_FORMAT" }}</time>
+                {% else %}
+                    <time datetime="{{ incident.start.isoformat }}">{{ incident.start|date:"SHORT_DATETIME_FORMAT" }}</time>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    {% if incident.status == "suspected" and not incident.summary %}
+        <div class="incident-item">
+            <div class="incident-timeline-col">
+            </div>
+            <div class="incident-content-col">
+                <p class="secondary">
+                    {% trans "No specific information is available yet. Our team has been alerted. Please allow for a little time while we investigate the issue." %}
+                </p>
+            </div>
+        </div>
+    {% else %}
+        <div class="incident-item">
+            <div class="incident-timeline-col">
+            </div>
+            <div class="incident-content-col">
+                <p class="secondary">
+                    {{ incident.summary }}
+                </p>
+            </div>
+        </div>
+    {% endif %}
+    {% for u in incident.updates.all %}
+        <div class="incident-item">
+            <div class="incident-timeline-col">
+                {% if forloop.counter0 > 0 or u.new_status != incident.status %}
+                    {% if u.new_status == "resolved" %}
+                        <span class="fa fa-fw fa-check-circle color-success" aria-hidden="true"></span>
+                    {% elif u.new_status == "watching" %}
+                        <span class="fa fa-fw fa-eye color-info" aria-hidden="true"></span>
+                    {% elif u.new_status == "confirmed" %}
+                        <span class="fa fa-fw fa-bell-ringing-o color-warning" aria-hidden="true"></span>
+                    {% else %}
+                        <div class="incident-timeline-bubble"></div>
+                    {% endif %}
+                {% else %}
+                    <div class="incident-timeline-bubble"></div>
+                {% endif %}
+            </div>
+            <div class="incident-content-col">
+                <p class="secondary">
+                    {{ u.message }}
+                </p>
+                <p class="secondary meta">
+                    <time datetime="{{ u.created.isoformat }}">{{ u.created|date:"SHORT_DATETIME_FORMAT" }}</time>
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+</article>

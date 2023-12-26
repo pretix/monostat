@@ -1,0 +1,21 @@
+{% extends "public/base.html" %}
+{% load i18n %}
+{% block content %}
+    {% include "public/fragment_big_status.html" %}
+    {% if current_incidents %}
+        <section class="incident-list">
+            <h2>{% trans "Current incidents" %}</h2>
+            {% for incident in current_incidents %}
+                {% include "public/fragment_incident_detail.html" %}
+            {% endfor %}
+        </section>
+    {% endif %}
+    {% if planned_incidents %}
+        <section class="incident-list">
+            <h2>{% trans "Planned maintenance" %}</h2>
+            {% for incident in planned_incidents %}
+                {% include "public/fragment_incident_detail.html" %}
+            {% endfor %}
+        </section>
+    {% endif %}
+{% endblock %}

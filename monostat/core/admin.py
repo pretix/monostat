@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.admin import GroupAdmin, UserAdmin
+from django.contrib.auth.models import User, Group
 from django.utils.translation import gettext_lazy as _
 from solo.admin import SingletonModelAdmin
 
@@ -26,8 +28,12 @@ class IncomingAlertInline(admin.StackedInline):
 
 class IncidentAdmin(admin.ModelAdmin):
     inlines = [IncidentUpdateInline, IncomingAlertInline]
+    list_display = ["title", "status", "severity", "start", "end"]
+    list_filter = ["status", "severity", "start", "end"]
 
 
 site = MonostatAdminSite(name="admin")
 site.register(SiteConfiguration, SiteConfigurationAdmin)
 site.register(Incident, IncidentAdmin)
+site.register(User, UserAdmin)
+site.register(Group, GroupAdmin)

@@ -6,12 +6,17 @@
   - [x] Incident
   - [x] IncidentUpdate
   - [x] OpsGenieAlert
-  - [ ] Configuration
+  - [x] Configuration
 - [ ] Slack integration bootstrapping
-- [ ] Django admin
+- [x] Django admin
 - [ ] Page rendering
-  - [ ] Current status
+  - [x] Current status
   - [ ] History
+  - [ ] Incident detail page
+  - [ ] Markdown support
+  - [ ] Use user timezone
+  - [ ] Mobile style
+  - [ ] RSS?
 - [ ] OpsGenie incoming webhook → Slack message
   - [ ] deduplicate incidents
   - [ ] Slack option "add update"
@@ -21,10 +26,14 @@
   - [ ] Ask in slack in maintenance should be started
 - [ ] Manually create incident from slack
 - [ ] Create scheduled maintenance from slack
-- [ ] Notify subscribers through rapidmail
+- [ ] Notify subscribers through Rapidmail
+- [ ] Housekeeping
+  - [ ] django-compressor
+  - [ ] CSP
 
 ## Later
 
 - [ ] Allow to subscribe
 - [ ] Widget for 500 pages
 - [ ] Widget for pretix backend
+- [ ] Public API

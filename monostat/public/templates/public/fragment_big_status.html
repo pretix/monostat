@@ -1,0 +1,70 @@
+{% load i18n %}
+<main class="index-status">
+    {% if "outage" in confirmed_severities %}
+        <span class="fa fa-minus-circle color-danger huge-icon" aria-hidden="true"></span>
+        <h1>
+            {% blocktrans trimmed with system=config.system_name %}
+                {{ system }} is down
+            {% endblocktrans %}
+        </h1>
+    {% elif "partial" in confirmed_severities %}
+        <span class="fa fa-warning color-warning huge-icon" aria-hidden="true"></span>
+        <h1>
+            {% blocktrans trimmed with system=config.system_name %}
+                {{ system }} is partially unavailable
+            {% endblocktrans %}
+        </h1>
+    {% elif suspected_incidents %}
+        <span class="fa fa-bell-ringing-o color-warning huge-icon" aria-hidden="true"></span>
+        <h1>
+            {% blocktrans trimmed with system=config.system_name %}
+                {{ system }} might be having issues
+            {% endblocktrans %}
+        </h1>
+        <p>
+            {% blocktrans trimmed %}
+                Our automated systems noticed a system availability issue. Our team has been
+                alerted and will look into the issue. Once we have confirmed the nature of the
+                issue, we will update this page.
+            {% endblocktrans %}
+        </p>
+    {% elif "bug" in confirmed_severities %}
+        <span class="fa fa-bug color-warning huge-icon" aria-hidden="true"></span>
+        <h1>
+            {% blocktrans trimmed with system=config.system_name %}
+                {{ system }} has a significant known issue
+            {% endblocktrans %}
+        </h1>
+    {% elif "notice" in confirmed_severities %}
+        <span class="fa fa-info-circle color-info huge-icon" aria-hidden="true"></span>
+        <h1>
+            {% blocktrans trimmed with system=config.system_name %}
+                {{ system }} is up and running
+            {% endblocktrans %}
+        </h1>
+        <p>
+            {% blocktrans trimmed %}
+                See below for current system notices.
+            {% endblocktrans %}
+        </p>
+    {% elif "maintenance" in confirmed_severities %}
+        <span class="fa fa-wrench color-info huge-icon" aria-hidden="true"></span>
+        <h1>
+            {% blocktrans trimmed with system=config.system_name %}
+                {{ system }} is undergoing planned maintenance
+            {% endblocktrans %}
+        </h1>
+    {% else %}
+        <span class="fa fa-check-circle color-success huge-icon" aria-hidden="true"></span>
+        <h1>
+            {% blocktrans trimmed with system=config.system_name %}
+                {{ system }} is up and running
+            {% endblocktrans %}
+        </h1>
+        <p>
+            {% blocktrans trimmed with email="<a href='mailto:"|add:config.support_email|add:"'>"|add:config.support_email|add:"</a>"|safe phone="<a href='tel:"|add:config.support_phone|add:"'>"|add:config.support_phone|add:"</a>"|safe %}
+                Having issues? Contact us at {{ email }} or {{ phone }}.
+            {% endblocktrans %}
+        </p>
+    {% endif %}
+</main>

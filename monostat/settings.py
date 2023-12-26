@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "solo",
     "monostat.core",
+    "monostat.public",
 ]
 
 MIDDLEWARE = [
