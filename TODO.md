@@ -38,4 +38,4 @@
 - [ ] Widget for pretix backend
 - [ ] Public API
 - [ ] Tooltips on history page
-- [ ] 404/401/500 page
+- [x] 404/401/500 page

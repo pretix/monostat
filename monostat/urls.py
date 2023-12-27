@@ -13,3 +13,6 @@ urlpatterns = (
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 )
+
+handler404 = "monostat.public.views.handler404"
+handler500 = "monostat.public.views.handler500"

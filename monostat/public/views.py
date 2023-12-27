@@ -5,11 +5,13 @@ from datetime import timezone, date, timedelta, datetime
 from django.conf import settings
 from django.db.models import Q
 from django.http import Http404
+from django.shortcuts import render
 from django.urls import reverse
 from django.utils.timezone import now
 from django.views.generic import TemplateView, DetailView
 
 from monostat.core.models import Incident
+from monostat.public.context import contextprocessor
 
 
 class IndexView(TemplateView):
@@ -169,3 +171,16 @@ class DayView(TemplateView):
             day=d,
             incidents=incidents,
         )
+
+
+def handler404(request, *args, **kwargs):
+    return render(request, "public/404.html")
+
+
+def handler500(request, *args, **kwargs):
+    ctx = {}
+    try:
+        ctx.update(contextprocessor(request))
+    except:
+        pass
+    return render(None, "public/500.html", ctx)
