@@ -1,0 +1,52 @@
+{% extends "public/base.html" %}
+{% load i18n %}
+{% block content %}
+    <h1 class="sr-only">
+        {% blocktrans with system=config.system_name %}{{ system }} System Status{% endblocktrans %}
+    </h1>
+    <h2>{% trans "History" %}</h2>
+    <div class="calendar">
+        {% for month, weeks in months %}
+            <div class="month">
+                <h3>{{ month|date:"F Y" }}</h3>
+                <div class="week-header">
+                    <div class="day-header">{% trans "Mo" %}</div>
+                    <div class="day-header">{% trans "Tu" %}</div>
+                    <div class="day-header">{% trans "We" %}</div>
+                    <div class="day-header">{% trans "Th" %}</div>
+                    <div class="day-header">{% trans "Fr" %}</div>
+                    <div class="day-header">{% trans "Sa" %}</div>
+                    <div class="day-header">{% trans "Su" %}</div>
+                </div>
+                {% for week in weeks %}
+                    <div class="week-row">
+                        {% for day, url, severities in week %}
+                            {% if day == 0 %}
+                                <div class="day-empty"></div>
+                            {% else %}
+                                <a href="{{ url }}"
+                                   class="day {% if severities %}day-with-incident{% endif %}">
+                                    {{ day }}
+                                    {% if "outage" in severities %}
+                                        <span class="fa fa-minus-circle color-danger" aria-hidden="true"></span>
+                                    {% elif "partial" in severities %}
+                                        <span class="fa fa-warning color-warning" aria-hidden="true"></span>
+                                    {% elif "bug" in severities %}
+                                        <span class="fa fa-bug color-warning" aria-hidden="true"></span>
+                                    {% elif "notice" in severities %}
+                                        <span class="fa fa-info-circle color-info" aria-hidden="true"></span>
+                                    {% elif "maintenance" in severities %}
+                                        <span class="fa fa-wrench color-info" aria-hidden="true"></span>
+                                    {% endif %}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <p class="back-nav">
+        <a href="{% url "public:index" %}">{% trans "View current system status" %}</a>
+    </p>
+{% endblock %}

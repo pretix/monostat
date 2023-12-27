@@ -15,8 +15,7 @@
         <link rel="stylesheet" href="{% static "public/fork-awesome.css" %}">
         <link rel="stylesheet" href="{% static "public/main.css" %}">
     {% endcompress %}
-    <title>{% block title %}{% blocktrans with system=config.system_name %}{{ system }} System Status
-    {% endblocktrans %}{% endblock %}</title>
+    <title>{% block title %}{% blocktrans with system=config.system_name %}{{ system }} System Status{% endblocktrans %}{% endblock %}</title>
 </head>
 <body>
 <header>
@@ -29,6 +28,9 @@
         <nav class="main-nav">
             <a href="{% url "public:index" %}">
                 {% trans "Current status" %}
+            </a>
+            <a href="{% url "public:history" %}">
+                {% trans "History" %}
             </a>
         </nav>
     </div>

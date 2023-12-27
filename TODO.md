@@ -10,7 +10,7 @@
 - [x] Django admin
 - [ ] Page rendering
   - [x] Current status
-  - [ ] History
+  - [x] History
   - [x] Incident detail page
   - [x] Markdown support
   - [x] Use user timezone
@@ -37,4 +37,5 @@
 - [ ] Widget for 500 pages
 - [ ] Widget for pretix backend
 - [ ] Public API
+- [ ] Tooltips on history page
 - [ ] 404/401/500 page

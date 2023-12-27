@@ -1,6 +1,7 @@
 {% extends "public/base.html" %}
 {% load i18n %}
 {% block content %}
+    <h1 class="sr-only">{% blocktrans with system=config.system_name %}{{ system }} System Status{% endblocktrans %}</h1>
     {% if incident.status == "dismissed" %}
         <div class="incident-dismissed">
             <p>

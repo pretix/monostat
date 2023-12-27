@@ -9,10 +9,27 @@ h1, h2 {
     font-weight: normal;
 }
 
+.sr-only {
+    /*
+    Only display content to screen readers
+    See: https://a11yproject.com/posts/how-to-hide-content
+     */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+
 a {
     color: var(--link-color);
     text-decoration: underline;
 }
+
 a:hover {
     color: var(--primary-color);
 }
@@ -47,7 +64,7 @@ header {
     padding: 15px 0;
     margin-bottom: 30px;
     font-family: "Titillium Web", "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    border-bottom: 1px solid #ededf0;
+    border-bottom: 1px solid #ededed;
     font-size: 20px;
 }
 
@@ -56,18 +73,30 @@ header .container {
     flex-direction: row;
     align-items: center;
 }
+
 .gap {
     flex: 1;
 }
+
 header .brand {
     line-height: 52px;
     font-size: 30px;
     text-decoration: none;
     color: var(--primary-text-color);
 }
+
 header .logo {
     height: 52px;
     margin-right: 30px;
+}
+
+header .main-nav a {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+header .main-nav a:last-child {
+    margin: 0;
 }
 
 footer {
@@ -78,6 +107,7 @@ footer {
     font-size: 12px;
     text-align: center;
 }
+
 footer a {
     color: var(--secondary-text-color);
 }
@@ -86,32 +116,40 @@ footer a {
     text-align: center;
     padding: 50px 0;
 }
+
 .huge-icon {
     display: inline-block;
     font-size: 180px;
     margin-bottom: 20px;
     text-shadow: #ddd 0 0 10px;
 }
+
 .index-status h1 {
     margin-bottom: 20px;
 }
+
 .index-status p {
     font-size: 20px;
 }
+
 .incident-list {
     margin-bottom: 25px;
 }
+
 .incident-list h2 {
     margin-bottom: 15px;
 }
+
 article.incident h3 {
     font-size: 18px;
 }
+
 article.incident .incident-header, article.incident .incident-item {
     display: flex;
     flex-direction: row;
     align-items: stretch;
 }
+
 article.incident .incident-timeline-col {
     display: block;
     width: 30px;
@@ -122,6 +160,7 @@ article.incident .incident-timeline-col {
     flex-shrink: 0;
     flex-grow: 0;
 }
+
 article.incident .incident-timeline-col::after {
     display: block;
     content: " ";
@@ -134,14 +173,17 @@ article.incident .incident-timeline-col::after {
     top: 0;
     z-index: 100;
 }
+
 article.incident .incident-header .incident-timeline-col {
     margin-top: -2px;
     font-size: 20px;
 }
+
 article.incident .incident-header .incident-timeline-col::after {
     height: calc(100% - 30px);
     top: 30px;
 }
+
 article.incident .incident-item .incident-timeline-col .fa {
     position: absolute;
     display: inline-block;
@@ -152,6 +194,7 @@ article.incident .incident-item .incident-timeline-col .fa {
     padding: 2px 0;
     margin-top: 2px;
 }
+
 article.incident .incident-timeline-col .incident-timeline-bubble {
     display: inline-block;
     width: 10px;
@@ -159,35 +202,100 @@ article.incident .incident-timeline-col .incident-timeline-bubble {
     background: #ccc;
     border-radius: 50%;
 }
+
 article.incident .incident-content-col p {
     margin-bottom: 15px;
 }
+
 article.incident .incident-content-col p + p.meta {
     margin-top: -10px;
 }
+
 article.incident .incident-content-col p.meta:first-child {
     margin-bottom: 5px;
 }
+
 article.incident .incident-content-col p.meta {
     font-style: italic;
     font-size: 14px;
 }
+
 article.incident .incident-content-col p.meta a.detail-link {
     color: var(--secondary-text-color);
     text-decoration: none;
 }
+
 article.incident .incident-content-col p.meta a.detail-link:hover {
     text-decoration: underline;
 }
+
 article.incident .incident-item:last-child .incident-content-col p:last-child {
     margin-bottom: 0;
 }
+
 article.incident .incident-item:last-child .incident-content-col {
     margin-bottom: 0;
 }
+
 .incident-dismissed {
     text-align: center;
 }
+
 .back-nav {
     margin-top: 25px;
+}
+
+.calendar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    margin: 0 -10px;
+}
+.calendar .month {
+    flex-basis: 30%;
+    margin: 10px;
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 10px;
+}
+.calendar .month h3 {
+    font-size: 16px;
+}
+.calendar .month .week-header,
+.calendar .month .week-row {
+    display: flex;
+    flex-direction: row;
+}
+.calendar .month .week-header .day-header {
+    color: var(--secondary-text-color);
+}
+.calendar .month .week-header .day-header,
+.calendar .month .week-row .day-empty,
+.calendar .month .week-row .day {
+    display: block;
+    flex-basis: 14.28%;
+    flex-grow: 1;
+    flex-shrink: 0;
+    text-align: center;
+    padding: 9px 5px;
+    position: relative;
+}
+.calendar .month .week-row a.day {
+    color: var(--secondary-text-color);
+    text-decoration: none;
+}
+.calendar .month .week-row a.day-with-incident {
+    color: var(--primary-text-color);
+    text-decoration: none;
+}
+.calendar .month .week-row a.day:hover {
+    background: #efefef;
+}
+.calendar .month .week-row a.day .fa {
+    position: absolute;
+    font-size: 15px;
+    top: 2px;
+    right: 2px;
 }
