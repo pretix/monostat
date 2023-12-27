@@ -71,6 +71,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
 ]
 
 ROOT_URLCONF = "monostat.urls"
@@ -240,3 +241,8 @@ COMPRESS_FILTERS = {
     ),
     "js": ("compressor.filters.jsmin.JSMinFilter",),
 }
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'",)
+CSP_FRAME_ANCESTORS = ("'self'",)
+CSP_INCLUDE_NONCE_IN = ["style-src"]
