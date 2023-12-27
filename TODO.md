@@ -8,13 +8,13 @@
   - [x] OpsGenieAlert
   - [x] Configuration
 - [x] Django admin
-- [ ] Page rendering
+- [x] Page rendering
   - [x] Current status
   - [x] History
   - [x] Incident detail page
   - [x] Markdown support
   - [x] Use user timezone
-  - [ ] Mobile style
+  - [x] Mobile style
   - [x] RSS/Atom
 - [ ] Slack integration bootstrapping
 - [ ] OpsGenie incoming webhook → Slack message

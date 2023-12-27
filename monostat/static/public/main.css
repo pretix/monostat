@@ -254,6 +254,7 @@ article.incident .incident-item:last-child .incident-content-col {
 }
 .calendar .month {
     flex-basis: 30%;
+    min-width: 300px;
     margin: 10px;
     flex-grow: 1;
     border: 1px solid #ccc;
@@ -298,4 +299,15 @@ article.incident .incident-item:last-child .incident-content-col {
     font-size: 15px;
     top: 2px;
     right: 2px;
+}
+
+@media (max-width: 800px) {
+    /* Mobile view for navigation */
+    header .container {
+        flex-direction: column;
+        text-align: center;
+    }
+    header .container nav {
+        margin-top: 10px;
+    }
 }
