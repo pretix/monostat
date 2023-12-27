@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "solo",
+    "compressor",
     "monostat.core",
     "monostat.public",
 ]
@@ -151,6 +152,7 @@ MEDIA_URL = "/media/"
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 )
 
 STATICFILES_DIRS = (
@@ -164,6 +166,15 @@ STATICFILES_DIRS += (
     if os.path.exists(os.path.join(BASE_DIR, "monostat/static"))
     else []
 )
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -217,4 +228,15 @@ LOGGING = {
             "propagate": True,
         },
     },
+}
+
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = not debug_default
+
+COMPRESS_FILTERS = {
+    "css": (
+        "compressor.filters.css_default.CssAbsoluteFilter",
+        "compressor.filters.cssmin.rCSSMinFilter",
+    ),
+    "js": ("compressor.filters.jsmin.JSMinFilter",),
 }

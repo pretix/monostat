@@ -1,16 +1,20 @@
 {% load i18n %}
 {% load static %}
+{% load compress %}
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% url "public:theme.css" %}">
-    {# TODO compress #}
-    <link rel="stylesheet" href="{% static "public/reboot.css" %}">
-    <link rel="stylesheet" href="{% static "public/fonts.css" %}">
-    <link rel="stylesheet" href="{% static "public/fork-awesome.css" %}">
-    <link rel="stylesheet" href="{% static "public/main.css" %}">
+    <style>
+        {{ theme_css }}
+    </style>
+    {% compress css %}
+        <link rel="stylesheet" href="{% static "public/reboot.css" %}">
+        <link rel="stylesheet" href="{% static "public/fonts.css" %}">
+        <link rel="stylesheet" href="{% static "public/fork-awesome.css" %}">
+        <link rel="stylesheet" href="{% static "public/main.css" %}">
+    {% endcompress %}
     <title>{% block title %}{% blocktrans with system=config.system_name %}{{ system }} System Status
     {% endblocktrans %}{% endblock %}</title>
 </head>
@@ -39,7 +43,9 @@
         <a href="{{ config.privacy_url }}" target="_blank">{% trans "Privacy" %}</a>
     </div>
 </footer>
-<script src="{% static "luxon/luxon.js" %}"></script>
-<script src="{% static "public/main.js" %}"></script>
+{% compress js %}
+    <script src="{% static "luxon/luxon.js" %}" defer></script>
+    <script src="{% static "public/main.js" %}" defer></script>
+{% endcompress %}
 </body>
 </html>

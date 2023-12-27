@@ -28,7 +28,7 @@
 - [ ] Create scheduled maintenance from slack
 - [ ] Notify subscribers through Rapidmail
 - [ ] Housekeeping
-  - [ ] django-compressor
+  - [x] django-compressor
   - [ ] CSP
 
 ## Later
