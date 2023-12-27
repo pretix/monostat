@@ -39,6 +39,8 @@
 </div>
 <footer>
     <div class="container">
+        <a href="{% url "public:feed.rss" %}" target="_blank">{% trans "RSS feed" %}</a> ·
+        <a href="{% url "public:feed.atom" %}" target="_blank">{% trans "Atom feed" %}</a> ·
         <a href="{{ config.legal_url }}" target="_blank">{% trans "Legal notice" %}</a> ·
         <a href="{{ config.privacy_url }}" target="_blank">{% trans "Privacy" %}</a>
     </div>

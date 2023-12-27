@@ -15,7 +15,7 @@
   - [x] Markdown support
   - [x] Use user timezone
   - [ ] Mobile style
-  - [ ] RSS?
+  - [x] RSS/Atom
 - [ ] Slack integration bootstrapping
 - [ ] OpsGenie incoming webhook → Slack message
   - [ ] deduplicate incidents
