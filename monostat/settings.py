@@ -34,7 +34,9 @@ else:
             pass  # os.chown is not available on Windows
         f.write(SECRET_KEY)
 
-debug_default = "runserver" in sys.argv or "runserver_plus" in sys.argv
+debug_default = (
+    "runserver" in sys.argv or "runserver_plus" in sys.argv or "manage.py" in sys.argv
+)
 DEBUG = os.environ.get("MONOSTAT_DEBUG", str(debug_default)) == "True"
 
 SITE_URL = os.getenv("MONOSTAT_SITE_URL", "http://localhost")
@@ -61,6 +63,7 @@ INSTALLED_APPS = [
     "compressor",
     "monostat.core",
     "monostat.public",
+    "monostat.opsgenie",
 ]
 
 MIDDLEWARE = [
