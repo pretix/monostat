@@ -2,6 +2,7 @@ env/
 .coverage
 htmlcov/
 .ropeproject
+.envrc
 *.sqlite3
 *.db
 *.py[cod]
