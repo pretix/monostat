@@ -23,11 +23,9 @@
   - [x] Slack option "add update"
   - [x] Slack option "dismiss issue"
   - [x] Slack option "close incident"
-  - [ ] Ask in slack if incident should be resolved if all alerts are closed
-  - [ ] Ask in slack if maintenance should be started if time is reached
+  - [x] Ask in slack if incident should be resolved if all alerts are closed
   - [x] Ask in slack if auto-closed incident should be mentioned
 - [ ] Manually create incident from slack
-- [ ] Create scheduled maintenance from slack
 - [ ] Notify subscribers through Rapidmail
 - [ ] Update slack after change on admin page
 - [ ] Notify subscribers after change on admin page
@@ -43,4 +41,6 @@
 - [ ] Widget for pretix backend
 - [ ] Public API
 - [ ] Tooltips on history page
+- [ ] Ask in slack if maintenance should be started if time is reached
+- [ ] Create scheduled maintenance from slack
 - [x] 404/401/500 page

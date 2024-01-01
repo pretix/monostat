@@ -16,6 +16,7 @@ from monostat.opsgenie.models import OpsgenieConfiguration
 from monostat.slack.outgoing import (
     on_new_incident_created_by_alert,
     on_autoresolved_incident,
+    on_all_alerts_resolved_incident,
 )
 
 
@@ -92,7 +93,7 @@ def webhook(request, secret):
                 action_flag=ADDITION,
             )
     elif action == "Close":
-        for alert in IncomingAlert.objects.filter(
+        for alert in IncomingAlert.objects.select_for_update().filter(
             external_id=alert_id, resolved__isnull=True
         ):
             alert.resolved = now()
@@ -130,5 +131,10 @@ def webhook(request, secret):
                         message=f"All alerts closed OpsGenie",
                         action_flag=CHANGE,
                     )
-                    # todo: send message to slack proposing to resolve the incident
+                    if incident.status in (
+                        Incident.Status.CONFIRMED,
+                        Incident.Status.WATCHING,
+                    ):
+                        # todo error handling for slack action
+                        on_all_alerts_resolved_incident(incident)
     return HttpResponse("OK")

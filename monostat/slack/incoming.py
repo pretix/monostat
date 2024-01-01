@@ -103,7 +103,6 @@ def on_update_incident(ack, body, payload, client):
 
 @app.view("update_incident_modal")
 def on_update_incident_modal(ack, body, client, view, logger):
-    print(view)
     slack_conf = SlackConfiguration.get_solo()
     log_user = User.objects.get_or_create(
         username="_slack", defaults=dict(is_active=False)
