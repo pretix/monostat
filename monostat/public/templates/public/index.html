@@ -10,6 +10,14 @@
             {% endfor %}
         </section>
     {% endif %}
+    {% if recent_incidents %}
+        <section class="incident-list">
+            <h2>{% trans "Recent incidents" %}</h2>
+            {% for incident in recent_incidents %}
+                {% include "public/fragment_incident_detail.html" %}
+            {% endfor %}
+        </section>
+    {% endif %}
     {% if planned_incidents %}
         <section class="incident-list">
             <h2>{% trans "Planned maintenance" %}</h2>

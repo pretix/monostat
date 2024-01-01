@@ -32,10 +32,15 @@ class IndexView(TemplateView):
                 Incident.Status.WATCHING,
             ),
         ).prefetch_related("updates")
+        recent_incidents = Incident.objects.filter(
+            Q(end__gt=now() - timedelta(hours=24)) | Q(start__gt=now() - timedelta(hours=24)),
+            status = Incident.Status.RESOLVED,
+        ).prefetch_related("updates")
 
         return super().get_context_data(
             planned_incidents=planned_incidents,
             current_incidents=current_incidents,
+            recent_incidents=recent_incidents,
             confirmed_severities={
                 i.severity
                 for i in current_incidents
