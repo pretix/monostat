@@ -110,12 +110,18 @@ def webhook(request, secret):
                         message=f"Incident dismissed through OpsGenie",
                         action_flag=CHANGE,
                     )
+                    incident.updates.create(
+                        message=gettext(
+                            "Our automated monitoring system has detected the incident "
+                            "to be resolved."
+                        )
+                    )
                     # todo: send message to slack inviting to resolve history
                 else:
                     log(
                         user,
                         obj=incident,
-                        message=f"All alerts closed  OpsGenie",
+                        message=f"All alerts closed OpsGenie",
                         action_flag=CHANGE,
                     )
                     # todo: send message to slack proposing to resolve the incident
