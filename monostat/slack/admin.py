@@ -29,20 +29,39 @@ class SlackConfigurationForm(SecretKeyFormMixin, forms.ModelForm):
                 if c.get("is_channel") and c.get("name") == channel_name:
                     return c["id"]
             while r["response_metadata"].get("next_cursor"):
-                r = client.conversations_list(cursor=r["response_metadata"].get("next_cursor"))
+                r = client.conversations_list(
+                    cursor=r["response_metadata"].get("next_cursor")
+                )
                 for c in r["channels"]:
                     if c.get("is_channel") and c.get("name") == channel_name:
                         return c["id"]
         except SlackApiError as e:
             raise ValidationError(_("Slack API error: {error}").format(error=str(e)))
-        raise ValidationError(_("Could not find channel {channel}").format(channel=channel_name))
+        raise ValidationError(
+            _("Could not find channel {channel}").format(channel=channel_name)
+        )
+
+    def _join_channel(self, bot_token, channel_id):
+        try:
+            client = create_web_client(
+                # NOTE: the token here can be None
+                token=bot_token,
+            )
+            client.conversations_join(channel=channel_id)
+        except SlackApiError as e:
+            raise ValidationError(_("Slack API error: {error}").format(error=str(e)))
 
     def clean(self):
-        d = self.cleaned_data
-        d["channel_id"] = self._find_channel_id(
-            self.instance.bot_token if d["bot_token"] == SECRET_REDACTED else d["bot_token"],
-            d["channel_name"].replace("#", "")
+        d = super().clean()
+        bot_token = (
+            self.instance.bot_token
+            if d["bot_token"] == SECRET_REDACTED
+            else d["bot_token"]
         )
+        d["channel_id"] = self._find_channel_id(
+            bot_token, d["channel_name"].replace("#", "")
+        )
+        self._join_channel(bot_token, d["channel_id"])
         return d
 
 

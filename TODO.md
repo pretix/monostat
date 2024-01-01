@@ -16,14 +16,14 @@
   - [x] Use user timezone
   - [x] Mobile style
   - [x] RSS/Atom
-- [ ] Slack integration bootstrapping
+- [x] Slack integration bootstrapping
 - [ ] OpsGenie incoming webhook → Slack message
   - [x] deduplicate incidents
   - [ ] Slack option "add update"
   - [ ] Slack option "dismiss issue"
   - [ ] Slack option "close incident"
   - [ ] Ask in slack if incident should be resolved
-  - [ ] Ask in slack in maintenance should be started
+  - [ ] Ask in slack if maintenance should be started
   - [ ] Ask in slack if auto-closed incident should be mentioned
 - [ ] Manually create incident from slack
 - [ ] Create scheduled maintenance from slack

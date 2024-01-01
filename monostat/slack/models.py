@@ -16,10 +16,14 @@ class SlackConfiguration(SingletonModel):
         max_length=255, verbose_name=_("Signing secret"), default=generate_secret
     )
     channel_name = models.CharField(
-        max_length=255, verbose_name=_("Channel name"),
+        max_length=255,
+        verbose_name=_("Channel name"),
     )
     channel_id = models.CharField(
-        max_length=255, verbose_name=_("Channel name"), blank=True, null=True,
+        max_length=255,
+        verbose_name=_("Channel name"),
+        blank=True,
+        null=True,
     )
 
     def __str__(self):

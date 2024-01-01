@@ -25,9 +25,9 @@ def authorize(enterprise_id, team_id, logger):
 
 app = App(
     authorize=authorize,
-    signing_secret="will-be-replaced-later",
+    signing_secret="will-be-replaced-later",  # todo more stable mechanism
 )
 try:
     authorize(None, None, None)
-finally:
+except:
     logger.exception("Could not set signing token")
