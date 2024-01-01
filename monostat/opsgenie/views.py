@@ -7,6 +7,7 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.utils.crypto import constant_time_compare
 from django.utils.timezone import now
+from django.utils.translation import gettext
 from django.views.decorators.csrf import csrf_exempt
 
 from monostat.core.models import IncomingAlert, Incident
@@ -31,20 +32,31 @@ def webhook(request, secret):
         raise BadRequest("Invalid JSON body")
 
     if action in ("Create", "UpdateMessage"):
-        incident, incident_created = Incident.objects.get_or_create(
-            status__in=(
-                Incident.Status.SUSPECTED,
-                Incident.Status.CONFIRMED,
-                Incident.Status.WATCHING,
-            ),
-            severity__in=(Incident.Severity.PARTIAL, Incident.Severity.OUTAGE),
-            defaults={
-                "status": Incident.Status.SUSPECTED,
-                "severity": Incident.Severity.OUTAGE,
-                "start": now(),
-                "title": "Outage",
-            },
-        )
+        try:
+            incident, incident_created = Incident.objects.get_or_create(
+                status__in=(
+                    Incident.Status.SUSPECTED,
+                    Incident.Status.CONFIRMED,
+                    Incident.Status.WATCHING,
+                ),
+                severity__in=(Incident.Severity.PARTIAL, Incident.Severity.OUTAGE),
+                defaults={
+                    "status": Incident.Status.SUSPECTED,
+                    "severity": Incident.Severity.OUTAGE,
+                    "start": now(),
+                    "title": "Outage",
+                },
+            )
+        except Incident.MultipleObjectsReturned:
+            incident = Incident.objects.filter(
+                status__in=(
+                    Incident.Status.SUSPECTED,
+                    Incident.Status.CONFIRMED,
+                    Incident.Status.WATCHING,
+                ),
+                severity__in=(Incident.Severity.PARTIAL, Incident.Severity.OUTAGE),
+            ).first()
+            incident_created = False
         alert, alert_created = IncomingAlert.objects.update_or_create(
             external_id=alert_id,
             defaults={
@@ -58,6 +70,13 @@ def webhook(request, secret):
                 obj=incident,
                 message="Incident created through OpsGenie",
                 action_flag=ADDITION,
+            )
+            incident.updates.create(
+                message=gettext(
+                    "Our automated monitoring system has detected an outage. Our team has "
+                    "been alerted and is looking into the issue. We will update this page "
+                    "if we have relevant information to share."
+                )
             )
             # todo: send message to slack asking to confirm
         if alert_created:
