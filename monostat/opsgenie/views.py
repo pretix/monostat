@@ -13,7 +13,10 @@ from django.views.decorators.csrf import csrf_exempt
 from monostat.core.models import IncomingAlert, Incident
 from monostat.core.utils.log import log
 from monostat.opsgenie.models import OpsgenieConfiguration
-from monostat.slack.outgoing import on_new_incident_created_by_alert
+from monostat.slack.outgoing import (
+    on_new_incident_created_by_alert,
+    on_autoresolved_incident,
+)
 
 
 @csrf_exempt
@@ -118,7 +121,8 @@ def webhook(request, secret):
                             "to be resolved."
                         )
                     )
-                    # todo: send message to slack inviting to resolve history
+                    # todo error handling for slack action
+                    on_autoresolved_incident(incident)
                 else:
                     log(
                         user,

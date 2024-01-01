@@ -34,6 +34,7 @@ class Incident(models.Model):
     end = models.DateTimeField(null=True, blank=True)
     title = models.TextField()
     summary = models.TextField(null=True, blank=True)
+    slack_message_ts = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
         verbose_name = _("Incident")

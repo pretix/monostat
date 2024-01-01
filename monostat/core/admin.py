@@ -18,6 +18,7 @@ class SiteConfigurationAdmin(SingletonModelAdmin):
 
 class IncidentUpdateInline(admin.StackedInline):
     model = IncidentUpdate
+    readonly_fields = ["created"]
     extra = 0
 
 
@@ -30,6 +31,7 @@ class IncidentAdmin(admin.ModelAdmin):
     inlines = [IncidentUpdateInline, IncomingAlertInline]
     list_display = ["title", "status", "severity", "start", "end"]
     list_filter = ["status", "severity", "start", "end"]
+    readonly_fields = ["created", "updated", "slack_message_ts"]
 
 
 site = MonostatAdminSite(name="admin")

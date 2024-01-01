@@ -19,15 +19,18 @@
 - [x] Slack integration bootstrapping
 - [ ] OpsGenie incoming webhook → Slack message
   - [x] deduplicate incidents
-  - [ ] Slack option "add update"
-  - [ ] Slack option "dismiss issue"
-  - [ ] Slack option "close incident"
-  - [ ] Ask in slack if incident should be resolved
-  - [ ] Ask in slack if maintenance should be started
-  - [ ] Ask in slack if auto-closed incident should be mentioned
+  - [x] Slack option "confirm incident"
+  - [x] Slack option "add update"
+  - [x] Slack option "dismiss issue"
+  - [x] Slack option "close incident"
+  - [ ] Ask in slack if incident should be resolved if all alerts are closed
+  - [ ] Ask in slack if maintenance should be started if time is reached
+  - [x] Ask in slack if auto-closed incident should be mentioned
 - [ ] Manually create incident from slack
 - [ ] Create scheduled maintenance from slack
 - [ ] Notify subscribers through Rapidmail
+- [ ] Update slack after change on admin page
+- [ ] Notify subscribers after change on admin page
 - [ ] Install guide incl. API keys
 - [x] Housekeeping
   - [x] django-compressor

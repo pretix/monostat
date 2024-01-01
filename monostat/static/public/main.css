@@ -140,6 +140,10 @@ footer a {
     margin-bottom: 15px;
 }
 
+.incident-list .incident:not(:last-child) {
+    margin-bottom: 20px;
+}
+
 article.incident h3 {
     font-size: 18px;
 }

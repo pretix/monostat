@@ -40,7 +40,7 @@ debug_default = (
 DEBUG = os.environ.get("MONOSTAT_DEBUG", str(debug_default)) == "True"
 
 SITE_URL = os.getenv("MONOSTAT_SITE_URL", "http://localhost")
-if SITE_URL == "http://localhost":
+if SITE_URL == "http://localhost" or DEBUG:
     ALLOWED_HOSTS = ["*"]
 else:
     ALLOWED_HOSTS = [urlparse(SITE_URL).netloc]
