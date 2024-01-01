@@ -5,3 +5,4 @@ markdown==3.5.*
 bleach==6.1.*
 django-compressor==4.*
 django-csp==3.7
+slack_bolt==1.18.*

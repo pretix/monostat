@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "monostat.core",
     "monostat.public",
     "monostat.opsgenie",
+    "monostat.slack",
 ]
 
 MIDDLEWARE = [

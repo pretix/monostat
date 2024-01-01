@@ -28,6 +28,7 @@
 - [ ] Manually create incident from slack
 - [ ] Create scheduled maintenance from slack
 - [ ] Notify subscribers through Rapidmail
+- [ ] Install guide incl. API keys
 - [x] Housekeeping
   - [x] django-compressor
   - [x] CSP
