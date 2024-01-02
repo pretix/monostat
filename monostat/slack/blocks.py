@@ -1,6 +1,8 @@
+import zoneinfo
 from urllib.parse import urljoin
 
 from django.conf import settings
+from django.utils.formats import date_format
 from django.utils.translation import gettext as _
 
 from monostat.core.models import Incident
@@ -8,12 +10,33 @@ from monostat.core.utils.admin import url_to_edit_object
 
 
 def incident_message(incident, alert_message=None):
-    text = _(
-        "*OpsGenie has reported a new incident.* The status page now shows "
-        "a suspected downtime. Please check if this is really an incident "
-        "that causes a user-visible issue on production. If yes, please "
-        "confirm the incident."
-    )
+    tz = zoneinfo.ZoneInfo(settings.TIME_ZONE)
+    if incident.status == Incident.Status.SUSPECTED:
+        text = _(
+            "*OpsGenie has reported a new incident.* The status page now shows "
+            "a suspected downtime. Please check if this is really an incident "
+            "that causes a user-visible issue on production. If yes, please "
+            "confirm the incident."
+        )
+    elif incident.status == Incident.Status.RESOLVED:
+        text = _(
+            "Resolved incident:"
+        )
+    elif incident.status == Incident.Status.DISMISSED:
+        text = _(
+            "Dismissed incident:"
+        )
+    elif incident.status == Incident.Status.PLANNED:
+        text = _(
+            "Planned maintenance (Start {start}):"
+        ).format(
+            start=date_format("SHORT_DATETIME_FORMAT", incident.start.astimezone(tz))
+        )
+    else:
+        text = _(
+            "Ongoing incident:"
+        )
+
     m = dict(
         text=text,
         blocks=[
@@ -23,17 +46,14 @@ def incident_message(incident, alert_message=None):
                     "type": "mrkdwn",
                     "text": text,
                 },
-                "accessory": {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "text": _("Details"),
-                        "emoji": True,
-                    },
-                    "url": urljoin(settings.SITE_URL, url_to_edit_object(incident)),
-                    "action_id": "link",
-                },
             },
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "*" + _("Incident title") + ":* " + incident.title,
+                },
+            }
         ],
     )
 
@@ -44,7 +64,7 @@ def incident_message(incident, alert_message=None):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": _("Alert message: {msg}").format(msg=alert_message),
+                        "text": _("*Alert message:* {msg}").format(msg=alert_message),
                     },
                 }
             )
@@ -148,18 +168,18 @@ def incident_message(incident, alert_message=None):
                 {
                     "type": "mrkdwn",
                     "text": "<%s|%s>"
-                    % (
-                        urljoin(settings.SITE_URL, url_to_edit_object(incident)),
-                        _("Change on admin page"),
-                    ),
+                            % (
+                                urljoin(settings.SITE_URL, url_to_edit_object(incident)),
+                                _("Change on admin page"),
+                            ),
                 },
                 {
                     "type": "mrkdwn",
                     "text": "<%s|%s>"
-                    % (
-                        urljoin(settings.SITE_URL, incident.get_absolute_url()),
-                        _("View on public page"),
-                    ),
+                            % (
+                                urljoin(settings.SITE_URL, incident.get_absolute_url()),
+                                _("View on public page"),
+                            ),
                 },
             ],
         }
@@ -293,6 +313,164 @@ def incident_update_modal(incident: Incident):
                 "label": {
                     "type": "plain_text",
                     "text": _("Updated incident summary"),
+                    "emoji": True,
+                },
+            },
+        ],
+    }
+
+
+def home_view():
+    return {
+        "type": "home",
+        "blocks": [
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": _("Create incident"),
+                            "emoji": True
+                        },
+                        "action_id": "create_incident"
+                    }
+                ]
+            }
+        ]
+    }
+
+
+def incident_create_modal():
+    return {
+        "type": "modal",
+        "title": {"type": "plain_text", "text": _("Create incident"), "emoji": True},
+        "callback_id": "create_incident_modal",
+        "submit": {"type": "plain_text", "text": _("Submit"), "emoji": True},
+        "close": {"type": "plain_text", "text": _("Cancel"), "emoji": True},
+        "blocks": [
+            {
+                "type": "input",
+                "block_id": "title",
+                "element": {
+                    "type": "plain_text_input",
+                    "multiline": False,
+                    "action_id": "title",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": _("Incident title"),
+                        "emoji": True,
+                    },
+                },
+                "label": {
+                    "type": "plain_text",
+                    "text": _("Incident title"),
+                    "emoji": True,
+                },
+            },
+            {
+                "type": "input",
+                "block_id": "status",
+                "element": {
+                    "type": "static_select",
+                    "initial_option": {
+                        "text": {
+                            "type": "plain_text",
+                            "text": _("confirmed"),
+                            "emoji": True,
+                        },
+                        "value": Incident.Status.CONFIRMED,
+                    },
+                    "options": [
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": _("planned"),
+                                "emoji": True,
+                            },
+                            "value": Incident.Status.PLANNED,
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": _("confirmed"),
+                                "emoji": True,
+                            },
+                            "value": Incident.Status.CONFIRMED,
+                        },
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": _("watching"),
+                                "emoji": True,
+                            },
+                            "value": Incident.Status.WATCHING,
+                        },
+                    ],
+                    "action_id": "status",
+                },
+                "label": {
+                    "type": "plain_text",
+                    "text": _("Incident status"),
+                    "emoji": True,
+                },
+            },
+            {
+                "type": "input",
+                "block_id": "severity",
+                "element": {
+                    "type": "static_select",
+                    "options": [
+                        {
+                            "text": {
+                                "type": "plain_text",
+                                "text": str(text),
+                                "emoji": True,
+                            },
+                            "value": value,
+                        }
+                        for value, text in Incident.Severity.choices
+                    ],
+                    "action_id": "severity",
+                },
+                "label": {
+                    "type": "plain_text",
+                    "text": _("Severity"),
+                    "emoji": True,
+                },
+            },
+            {
+                "type": "input",
+                "block_id": "start",
+                "optional": True,
+                "element": {
+                    "type": "datetimepicker",
+                    "action_id": "start",
+                },
+                "label": {
+                    "type": "plain_text",
+                    "text": _("Incident start time"),
+                    "emoji": True,
+                },
+            },
+            {
+                "type": "input",
+                "block_id": "summary",
+                "optional": True,
+                "element": {
+                    "type": "plain_text_input",
+                    "multiline": True,
+                    "action_id": "summary",
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": _("Incident summary"),
+                        "emoji": True,
+                    },
+                },
+                "label": {
+                    "type": "plain_text",
+                    "text": _("Incident summary"),
                     "emoji": True,
                 },
             },

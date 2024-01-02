@@ -92,3 +92,21 @@ def on_all_alerts_resolved_incident(incident):
             "this has been resolved."
         ),
     )
+
+
+def on_changed_incident(incident):
+    slack_conf = SlackConfiguration.get_solo()
+    app.client.token = slack_conf.bot_token
+    if incident.slack_message_ts:
+        app.client.chat_update(
+            channel=slack_conf.channel_id,
+            ts=incident.slack_message_ts,
+            **incident_message(incident),
+        )
+    else:
+        m = app.client.chat_postMessage(
+            channel=slack_conf.channel_id,
+            **incident_message(incident)
+        )
+        incident.slack_message_ts = m["ts"]
+        incident.save(update_fields=["slack_message_ts"])
