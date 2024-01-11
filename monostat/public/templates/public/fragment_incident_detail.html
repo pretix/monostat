@@ -2,7 +2,7 @@
 {% load rich_text %}
 <article class="incident">
     <div class="incident-header">
-        <div class="incident-timeline-col">
+        <div class="incident-timeline-col no-line">
             {% if incident.status == "planned" %}
                 <span class="fa fa-clock-o secondary" aria-hidden="true"></span>
             {% elif incident.status == "watching" %}
@@ -26,7 +26,7 @@
         </h3>
     </div>
     <div class="incident-item">
-        <div class="incident-timeline-col">
+        <div class="incident-timeline-col no-line">
         </div>
         <div class="incident-content-col">
             <p class="secondary meta">
@@ -64,7 +64,7 @@
     {% for u in incident.updates.all %}
         <div class="incident-item">
             <div class="incident-timeline-col">
-                {% if forloop.counter0 > 0 or u.new_status != incident.status %}
+                {% if 1 %}
                     {% if u.new_status == "resolved" %}
                         <span class="fa fa-fw fa-check-circle color-success" aria-hidden="true"></span>
                     {% elif u.new_status == "watching" %}

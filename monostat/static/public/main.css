@@ -165,16 +165,16 @@ article.incident .incident-timeline-col {
     flex-grow: 0;
 }
 
-article.incident .incident-timeline-col::after {
+article.incident .incident-timeline-col:not(.no-line)::after {
     display: block;
     content: " ";
     width: 2px;
     background: #ccc;
     position: absolute;
-    height: 100%;
+    height: calc(100%);
     left: 50%;
     margin-left: -1px;
-    top: 0;
+    top: 7px;
     z-index: 100;
 }
 

@@ -182,7 +182,7 @@ def on_update_incident_modal(ack, body, client, view, logger):
                 channel=slack_conf.channel_id,
                 thread_ts=incident.slack_message_ts,
                 text=_(
-                    'This incident summary has on user request by user "{user}".'
+                    'This incident summary has  been updated on user request by user "{user}".'
                 ).format(user=user, severity=incident.get_severity_display()),
             )
 

@@ -107,6 +107,9 @@ class HistoryView(TemplateView):
                         microsecond=0,
                         tzinfo=tz
                     )
+                    if d_start > now():
+                        newweek.append((0, None, set()))
+                        continue
                     d_end = datetime(
                         *year_month,
                         day,
@@ -139,7 +142,7 @@ class HistoryView(TemplateView):
             months.append((date(*year_month, 1), monthcal))
             year_month = year_month[0], year_month[1] + 1
             if year_month[1] > 12:
-                year_month = year_month[1] + 0, 1
+                year_month = year_month[0] + 1, 1
 
         return super().get_context_data(
             months=reversed(months),

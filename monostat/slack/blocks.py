@@ -271,7 +271,7 @@ def incident_update_modal(incident: Incident):
                 },
                 "label": {
                     "type": "plain_text",
-                    "text": _("New incident status"),
+                    "text": _("New incident severity"),
                     "emoji": True,
                 },
             },
