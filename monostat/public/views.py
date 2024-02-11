@@ -4,7 +4,7 @@ from datetime import timezone, date, timedelta, datetime
 
 from django import forms
 from django.conf import settings
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, PermissionDenied
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
@@ -20,7 +20,7 @@ from django.views.generic import (
 )
 
 from monostat.core.models import Incident
-from monostat.notifications.models import Subscriber
+from monostat.notifications.models import Subscriber, NotificationConfiguration
 from monostat.notifications.tasks import send_optin
 from monostat.public.context import contextprocessor
 
@@ -208,10 +208,6 @@ class UnsubscribeDoneView(TemplateView):
 
 
 class SubscribeForm(forms.ModelForm):
-    captcha = forms.CharField(
-        label=_("Please enter 'v' to confirm you are not a robot")
-    )
-
     class Meta:
         model = Subscriber
         fields = ["email"]
@@ -233,6 +229,12 @@ class SubscribeView(CreateView):
     model = Subscriber
     template_name = "public/subscribe.html"
     form_class = SubscribeForm
+
+    def dispatch(self, request, *args, **kwargs):
+        nc = NotificationConfiguration.get_solo()
+        if not nc.allow_subscriptions:
+            raise PermissionDenied("Feature disabled")
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse("public:subscribe.done")
