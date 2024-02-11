@@ -24,4 +24,5 @@ data/
 *.cfg
 static.dist
 *.ini
-
+build/
+*.egg-info

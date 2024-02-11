@@ -106,7 +106,7 @@ class HistoryView(TemplateView):
                         minute=0,
                         second=0,
                         microsecond=0,
-                        tzinfo=tz
+                        tzinfo=tz,
                     )
                     if d_start > now():
                         newweek.append((0, None, set()))
@@ -118,7 +118,7 @@ class HistoryView(TemplateView):
                         minute=59,
                         second=59,
                         microsecond=999999,
-                        tzinfo=tz
+                        tzinfo=tz,
                     )
                     severities = {
                         i.severity
