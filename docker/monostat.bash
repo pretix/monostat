@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /pretix/src
+cd /src
 export DATA_DIR=/data/
 export HOME=/src
 
