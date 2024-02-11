@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 
 from monostat.core.models import Incident
 from monostat.core.utils.log import log
+from monostat.notifications.tasks import send_notifications
 from monostat.slack.blocks import (
     incident_message,
     incident_update_modal,
@@ -96,6 +97,7 @@ def on_confirm_incident(ack, payload, body, client):
             'This incident has been confirmed on user request by user "{user}".'
         ).format(user=user),
     )
+    send_notifications(incident.pk)
 
 
 @app.action("update_incident")
@@ -240,12 +242,12 @@ def on_update_incident_modal(ack, body, client, view, logger):
                 ],
             )
 
-    # todo: notify subscribers
     client.chat_update(
         channel=slack_conf.channel_id,
         ts=incident.slack_message_ts,
         **incident_message(incident),
     )
+    send_notifications(incident.pk)
 
 
 @app.event("app_home_opened")
@@ -305,4 +307,4 @@ def on_create_incident_modal(ack, body, client, view, logger):
             user=user, severity=incident.get_severity_display()
         ),
     )
-    # todo: notify subscribers
+    send_notifications(incident.pk)

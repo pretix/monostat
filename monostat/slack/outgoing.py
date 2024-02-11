@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
 from huey.contrib.djhuey import db_task
 
+from monostat.core.models import Incident
 from monostat.core.utils.admin import url_to_edit_object
 from monostat.core.utils.log import log
 from monostat.slack.blocks import incident_message
@@ -99,7 +100,8 @@ def on_all_alerts_resolved_incident(incident):
 
 
 @db_task(priority=20, retries=5)
-def on_changed_incident(incident, change_message=None):
+def on_changed_incident(incident_id, change_message=None):
+    incident = Incident.objects.get(pk=incident_id)
     slack_conf = SlackConfiguration.get_solo()
     app.client.token = slack_conf.bot_token
     if incident.slack_message_ts:

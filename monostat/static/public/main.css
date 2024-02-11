@@ -305,6 +305,29 @@ article.incident .incident-item:last-child .incident-content-col {
     right: 2px;
 }
 
+button.button {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857;
+    border-radius: 3px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background: var(--link-color);
+    color: white;
+}
+
 @media (max-width: 800px) {
     /* Mobile view for navigation */
     header .container {

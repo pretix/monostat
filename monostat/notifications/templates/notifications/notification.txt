@@ -1,0 +1,25 @@
+{% load i18n %}
+{% if incident.status == "planned" %}{% blocktrans trimmed with system=conf.system_name %}
+A planned maintenance for {{ system }} has been posted.
+{% endblocktrans %}{% elif incident_is_new %}{% blocktrans trimmed with system=conf.system_name %}
+A new incident for {{ system }} has been posted.
+{% endblocktrans %}{% elif incident.status == "resolved" %}{% blocktrans trimmed with system=conf.system_name %}
+A new incident for {{ system }} has been marked as resolved.
+{% endblocktrans %}{% else %}{% blocktrans trimmed with system=conf.system_name %}
+An incident for {{ system }} has been updated.
+{% endblocktrans %}{% endif %}
+
+{% trans "Incident title" %}: {{ incident.title }}
+
+{% if incident.status == "planned" %}
+{% trans "Start of maintenance window" %}: {{ incident.start }}
+{% else %}
+{% trans "Incident status" %}: {{ incident.get_status_display }}
+{% trans "Incident severity" %}: {{ incident.get_severity_display }}
+{% endif %}
+
+{% trans "View incident details" %}:
+{{ incident_url }}
+
+{% trans "Unsubscribe from these notifications" %}:
+{{ unsubscribe_url }}

@@ -18,7 +18,7 @@ class Incident(models.Model):
         NOTICE = "notice", _("Notice")
         BUG = "bug", _("Known Bug")
         PARTIAL = "partial", _("Partial Outage")
-        OUTAGE = "outage", _("Full Outage")
+        OUTAGE = "outage", _("Outage")
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -35,6 +35,15 @@ class Incident(models.Model):
     title = models.TextField()
     summary = models.TextField(null=True, blank=True)
     slack_message_ts = models.CharField(max_length=100, null=True, blank=True)
+    silent = models.BooleanField(
+        default=False, verbose_name=_("Never send notifications for this incident")
+    )
+    last_notified_status = models.CharField(
+        max_length=50,
+        choices=Status,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = _("Incident")

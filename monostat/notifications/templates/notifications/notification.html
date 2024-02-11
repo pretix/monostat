@@ -1,0 +1,37 @@
+{% extends "notifications/base.html" %}
+{% load i18n %}
+{% block content %}
+    <p>
+        {% if incident.status == "planned" %}
+            {% blocktrans trimmed with system=conf.system_name %}
+                A planned maintenance for {{ system }} has been posted.
+            {% endblocktrans %}
+        {% elif incident_is_new %}
+            {% blocktrans trimmed with system=conf.system_name %}
+                A new incident for {{ system }} has been posted.
+            {% endblocktrans %}
+        {% elif incident.status == "resolved" %}
+            {% blocktrans trimmed with system=conf.system_name %}
+                A new incident for {{ system }} has been marked as resolved.
+            {% endblocktrans %}
+        {% else %}
+            {% blocktrans trimmed with system=conf.system_name %}
+                An incident for {{ system }} has been updated.
+            {% endblocktrans %}
+        {% endif %}
+    </p>
+    <h3>{{ incident.title }}</h3>
+    <p>
+        {% if incident.status == "planned" %}
+            {% trans "Start of maintenance window" %}: {{ incident.start }}
+        {% else %}
+            <strong>{% trans "Incident status" %}</strong>: {{ incident.get_status_display }}<br>
+            <strong>{% trans "Incident severity" %}</strong>: {{ incident.get_severity_display }}
+        {% endif %}
+    </p>
+    <div class="order-button">
+        <a href="{{ incident_url }}" target="_blank" class="button">
+            {% trans "View incident details" %}
+        </a>
+    </div>
+{% endblock %}

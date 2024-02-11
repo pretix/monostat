@@ -8,3 +8,4 @@ django-csp==3.7
 slack_bolt==1.18.*
 huey==2.5.*
 redis==5.0.*
+css-inline==0.13.*

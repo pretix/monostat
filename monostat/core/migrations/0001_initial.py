@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                             ("notice", "Notice"),
                             ("bug", "Known Bug"),
                             ("partial", "Partial Outage"),
-                            ("outage", "Full Outage"),
+                            ("outage", "Outage"),
                         ],
                         max_length=50,
                     ),

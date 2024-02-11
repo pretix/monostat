@@ -8,9 +8,10 @@ from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils.timezone import now
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
 
 from monostat.core.models import Incident
+from monostat.notifications.models import Subscriber
 from monostat.public.context import contextprocessor
 
 
@@ -180,6 +181,20 @@ class DayView(TemplateView):
             day=d,
             incidents=incidents,
         )
+
+
+class UnsubscribeView(DeleteView):
+    model = Subscriber
+    slug_url_kwarg = "token"
+    slug_field = "token"
+    template_name = "public/unsubscribe.html"
+
+    def get_success_url(self):
+        return reverse("public:unsubscribe.done")
+
+
+class UnsubscribeDoneView(TemplateView):
+    template_name = "public/unsubscribe_done.html"
 
 
 def handler404(request, *args, **kwargs):

@@ -26,11 +26,12 @@
   - [x] Ask in slack if incident should be resolved if all alerts are closed
   - [x] Ask in slack if auto-closed incident should be mentioned
 - [x] Manually create incident from slack
-- [ ] Show message in slack dialogs that subscribers will be notified
-- [ ] Notify subscribers through Rapidmail
+- [x] Show message in slack dialogs that subscribers will be notified
+- [x] Notify subscribers through Rapidmail
 - [x] Update slack after change on admin page
-- [ ] Notify subscribers after change on admin page
+- [x] Notify subscribers after change on admin page
 - [ ] Install guide incl. API keys
+- [x] Unsubscribe option
 - [x] Housekeeping
   - [x] django-compressor
   - [x] CSP

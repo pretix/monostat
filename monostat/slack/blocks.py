@@ -236,6 +236,13 @@ def incident_update_modal(incident: Incident):
                 },
             },
             {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": _("If the status changes, subscribers will be notified."),
+                },
+            },
+            {
                 "type": "input",
                 "block_id": "update_text",
                 "optional": True,

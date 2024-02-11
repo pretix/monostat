@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     "monostat.public",
     "monostat.opsgenie",
     "monostat.slack",
+    "monostat.notifications",
 ]
 
 MIDDLEWARE = [
@@ -257,6 +258,15 @@ CSP_STYLE_SRC = ("'self'",)
 CSP_FRAME_ANCESTORS = ("'self'",)
 CSP_INCLUDE_NONCE_IN = ["style-src"]
 
+MAIL_FROM = SERVER_EMAIL = DEFAULT_FROM_EMAIL = os.environ.get(
+    "MONOSTAT_MAIL_FROM", "admin@localhost"
+)
+EMAIL_HOST = os.environ.get("MONOSTAT_MAIL_HOST", "localhost")
+EMAIL_PORT = int(os.environ.get("MONOSTAT_MAIL_PORT", "1025"))
+EMAIL_HOST_USER = os.environ.get("MONOSTAT_MAIL_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("MONOSTAT_MAIL_PASSWORD", "")
+EMAIL_USE_TLS = os.environ.get("MONOSTAT_MAIL_TLS", "False") == "True"
+EMAIL_USE_SSL = os.environ.get("MONOSTAT_MAIL_SSL", "False") == "True"
 
 pool = ConnectionPool(
     **{
