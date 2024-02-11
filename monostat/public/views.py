@@ -124,9 +124,9 @@ class HistoryView(TemplateView):
                         i.severity
                         for i in incidents
                         if (
-                            d_start < i.start < d_end
-                            or (i.end and d_end < i.end < d_end)
-                            or (i.end and d_start > i.start and d_end < i.end)
+                            d_start <= i.start <= d_end
+                            or (i.end and d_start <= i.end <= d_end)
+                            or (i.end and d_start >= i.start and d_end <= i.end)
                         )
                     }
                     newweek.append(
