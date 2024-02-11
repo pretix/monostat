@@ -31,6 +31,7 @@ dependencies = [
   "huey==2.5.*",
   "redis==5.0.*",
   "css-inline==0.13.*",
+  "psycopg2-binary",
 ]
 
 [tool.setuptools.packages.find]
