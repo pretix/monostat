@@ -22,6 +22,18 @@ urlpatterns = [
     path("<date:date>/<int:pk>", views.IncidentDetailView.as_view(), name="detail"),
     path("<date:date>", views.DayView.as_view(), name="day"),
     path("history", views.HistoryView.as_view(), name="history"),
+    path("subscribe/", views.SubscribeView.as_view(), name="subscribe"),
+    path("subscribe/done", views.SubscribeDoneView.as_view(), name="subscribe.done"),
+    path(
+        "subscribe/confirmed",
+        views.SubscribeConfirmedView.as_view(),
+        name="subscribe.confirmed",
+    ),
+    path(
+        "subscribe/<str:token>",
+        views.SubscribeConfirmView.as_view(),
+        name="subscribe.confirm",
+    ),
     path(
         "unsubscribe/done", views.UnsubscribeDoneView.as_view(), name="unsubscribe.done"
     ),

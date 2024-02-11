@@ -2,16 +2,26 @@ import calendar
 import zoneinfo
 from datetime import timezone, date, timedelta, datetime
 
+from django import forms
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.timezone import now
-from django.views.generic import TemplateView, DetailView, UpdateView, DeleteView
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import (
+    TemplateView,
+    DetailView,
+    DeleteView,
+    CreateView,
+)
 
 from monostat.core.models import Incident
 from monostat.notifications.models import Subscriber
+from monostat.notifications.tasks import send_optin
 from monostat.public.context import contextprocessor
 
 
@@ -195,6 +205,72 @@ class UnsubscribeView(DeleteView):
 
 class UnsubscribeDoneView(TemplateView):
     template_name = "public/unsubscribe_done.html"
+
+
+class SubscribeForm(forms.ModelForm):
+    captcha = forms.CharField(
+        label=_("Please enter 'v' to confirm you are not a robot")
+    )
+
+    class Meta:
+        model = Subscriber
+        fields = ["email"]
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if Subscriber.objects.filter(email__iexact=email, active=True).exists():
+            raise ValidationError(_("You are already subscribed."))
+        if Subscriber.objects.filter(
+            email__iexact=email, active=False, created__gt=now() - timedelta(hours=24)
+        ).exists():
+            raise ValidationError(
+                _("You have already tried subscribing in the last 24 hours.")
+            )
+        return email
+
+
+class SubscribeView(CreateView):
+    model = Subscriber
+    template_name = "public/subscribe.html"
+    form_class = SubscribeForm
+
+    def get_success_url(self):
+        return reverse("public:subscribe.done")
+
+    def form_valid(self, form):
+        Subscriber.objects.filter(
+            email__iexact=form.cleaned_data["email"], active=False
+        ).delete()
+        form.instance.active = False
+        form.instance.save()
+        transaction.on_commit(lambda: send_optin(form.instance.pk))
+        return redirect(self.get_success_url())
+
+
+class SubscribeConfirmView(DeleteView):
+    model = Subscriber
+    slug_url_kwarg = "token"
+    slug_field = "token"
+    template_name = "public/subscribe_confirm.html"
+
+    def form_valid(self, form):
+        self.object.active = True
+        self.object.save()
+        Subscriber.objects.filter(email__iexact=self.object.email).exclude(
+            pk=self.object.pk
+        ).delete()
+        return redirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse("public:subscribe.confirmed")
+
+
+class SubscribeDoneView(TemplateView):
+    template_name = "public/subscribe_done.html"
+
+
+class SubscribeConfirmedView(TemplateView):
+    template_name = "public/subscribe_confirmed.html"
 
 
 def handler404(request, *args, **kwargs):

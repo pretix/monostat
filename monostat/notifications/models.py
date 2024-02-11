@@ -10,6 +10,9 @@ def generate_token():
 
 class NotificationConfiguration(SingletonModel):
     reply_to = models.EmailField(verbose_name=_("Reply-to address"))
+    allow_subscriptions = models.BooleanField(
+        verbose_name=_("Allow new subscriptions"), default=False
+    )
 
     def __str__(self):
         return "Notification Configuration"
@@ -24,6 +27,7 @@ class Subscriber(models.Model):
     token = models.CharField(
         max_length=255, verbose_name=_("Token"), default=generate_token
     )
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.email
@@ -34,6 +38,17 @@ class Subscriber(models.Model):
 
         return reverse(
             "public:unsubscribe",
+            kwargs={
+                "token": self.token,
+            },
+        )
+
+    @property
+    def confirm_url(self):
+        from django.urls import reverse
+
+        return reverse(
+            "public:subscribe.confirm",
             kwargs={
                 "token": self.token,
             },

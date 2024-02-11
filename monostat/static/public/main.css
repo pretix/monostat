@@ -314,7 +314,14 @@ article.incident .incident-item:last-child .incident-content-col {
     right: 2px;
 }
 
-button.button {
+input[type=text], input[type=email] {
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+button {
     display: inline-block;
     margin-bottom: 0;
     font-weight: normal;
@@ -335,6 +342,9 @@ button.button {
     user-select: none;
     background: var(--link-color);
     color: white;
+}
+.errorlist {
+    color: var(--danger-color);
 }
 
 @media (max-width: 800px) {

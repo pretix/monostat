@@ -1,0 +1,16 @@
+{% extends "notifications/base.html" %}
+{% load i18n %}
+{% block content %}
+    <p>
+        {% trans "You have requested to subscribe for status notifications on our status page." %}
+        {% trans "To activate the subscription, click the following button:" %}
+    </p>
+    <div class="order-button">
+        <a href="{{ confirm_url }}" target="_blank" class="button">
+            {% trans "Confirm subscription" %}
+        </a>
+    </div>
+    <p>
+        {% trans "If this was not you, please ignore this email." %}
+    </p>
+{% endblock %}

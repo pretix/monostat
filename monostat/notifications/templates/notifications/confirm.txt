@@ -1,0 +1,7 @@
+{% load i18n %}
+{% trans "You have requested to subscribe for status notifications on our status page." %}
+
+{% trans "To confirm your subscription, follow this link:" %}
+{{ confirm_url }}
+
+{% trans "If this was not you, please ignore this email." %}

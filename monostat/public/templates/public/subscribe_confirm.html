@@ -1,0 +1,12 @@
+{% extends "public/base.html" %}
+{% load i18n %}
+{% block content %}
+    <h1>{% trans "Confirm subscription" %}</h1>
+    <p>
+        {% trans "Do you really want to subscribe to our status notifications?" %}
+    </p>
+    <form method="post" action="">
+        {% csrf_token %}
+        <button type="submit" class="button">{% trans "Yes, confirm subscription" %}</button>
+    </form>
+{% endblock %}

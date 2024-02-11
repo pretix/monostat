@@ -38,7 +38,7 @@
 
 ## Later
 
-- [ ] Allow to subscribe
+- [x] Allow to subscribe
 - [ ] Widget for 500 pages
 - [ ] Widget for pretix backend
 - [ ] Public API

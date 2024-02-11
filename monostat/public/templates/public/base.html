@@ -47,6 +47,9 @@
     <div class="container">
         <a href="{% url "public:feed.rss" %}" target="_blank">{% trans "RSS feed" %}</a> ·
         <a href="{% url "public:feed.atom" %}" target="_blank">{% trans "Atom feed" %}</a> ·
+        {% if notification_config and notification_config.allow_subscriptions %}
+            <a href="{% url "public:subscribe" %}">{% trans "Subscribe" %}</a> ·
+        {% endif %}
         {% if config %}
             <a href="{{ config.legal_url }}" target="_blank">{% trans "Legal notice" %}</a> ·
             <a href="{{ config.privacy_url }}" target="_blank">{% trans "Privacy" %}</a>

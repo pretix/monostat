@@ -1,0 +1,16 @@
+{% extends "public/base.html" %}
+{% load i18n %}
+{% block content %}
+    <h1>{% trans "Subscribe" %}</h1>
+    <p>
+        {% trans "Do you want to be alerted via email on new incidents?" %}
+    </p>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="field-wrapper">
+            {{ form.email.as_field_group }}
+        </div>
+        <button type="submit" class="button">{% trans "Subscribe" %}</button>
+    </form>
+{% endblock %}

@@ -86,3 +86,42 @@ def send_notifications(incident_id):
 
     incident.last_notified_status = incident.status
     incident.save(update_fields=["last_notified_status"])
+
+
+@db_task(priority=0)
+def send_optin(subscriber_id):
+    subscriber = Subscriber.objects.get(pk=subscriber_id)
+    conf = SiteConfiguration.get_solo()
+
+    if subscriber.active:
+        return
+
+    subject = _("Confirm subscription")
+    ctx = {
+        "conf": conf,
+        "settings": settings,
+        "subject": subject,
+        "confirm_url": urljoin(settings.SITE_URL, subscriber.confirm_url),
+    }
+
+    tpl_html = get_template("notifications/confirm.html")
+    body_html = tpl_html.render(ctx)
+    inliner = css_inline.CSSInliner()
+    body_html = inliner.inline(body_html)
+
+    tpl_plain = get_template("notifications/confirm.txt")
+    body_plain = tpl_plain.render(ctx)
+
+    from_name = _("%(system)s System Status") % {"system": conf.system_name}
+
+    msg = EmailMultiAlternatives(
+        subject,
+        body_plain,
+        f"{from_name} <{settings.MAIL_FROM}>",
+        [subscriber.email],
+    )
+    msg.attach_alternative(body_html, "text/html")
+    try:
+        msg.send()
+    except:
+        logger.exception("Could not send mail.")
