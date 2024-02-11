@@ -38,4 +38,4 @@ VOLUME /data
 EXPOSE 80
 USER monostat
 ENTRYPOINT ["/usr/local/bin/monostat"]
-CMD ["web"]
+CMD ["all"]

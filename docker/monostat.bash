@@ -32,7 +32,7 @@ if [ "$1" == "web" ]; then
         --bind=unix:/tmp/monostat.sock
 fi
 
-if [ "$1" == "taskworker" ]; then
+if [ "$1" == "worker" ]; then
     exec python3 -m monostat run_huey --workers $NUM_WORKERS
 fi
 
