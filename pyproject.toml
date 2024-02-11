@@ -33,5 +33,5 @@ dependencies = [
   "css-inline==0.13.*",
 ]
 
-[tool.setuptools]
-packages = ["monostat"]
+[tool.setuptools.packages.find]
+include = ["monostat*"]
