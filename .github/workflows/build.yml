@@ -10,7 +10,7 @@ jobs:
     - name: Docker login
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: Build the Docker image
-      run: docker build -t monostat
+      run: docker build -t monostat .
     - name: Tag image
       run: docker tag monostat pretix/monostat:${GITHUB_REF##*/}
     - name: Docker push
