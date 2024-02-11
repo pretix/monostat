@@ -30,7 +30,7 @@
 - [x] Notify subscribers through Rapidmail
 - [x] Update slack after change on admin page
 - [x] Notify subscribers after change on admin page
-- [ ] Install guide incl. API keys
+- [x] Install guide incl. API keys
 - [x] Unsubscribe option
 - [x] Housekeeping
   - [x] django-compressor

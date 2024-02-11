@@ -21,7 +21,8 @@ class SlackConfiguration(SingletonModel):
     )
     channel_id = models.CharField(
         max_length=255,
-        verbose_name=_("Channel name"),
+        verbose_name=_("Channel ID"),
+        help_text=_("Will be filled automatically!"),
         blank=True,
         null=True,
     )
