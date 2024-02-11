@@ -19,23 +19,15 @@ def incident_message(incident, alert_message=None):
             "confirm the incident."
         )
     elif incident.status == Incident.Status.RESOLVED:
-        text = _(
-            "Resolved incident:"
-        )
+        text = _("Resolved incident:")
     elif incident.status == Incident.Status.DISMISSED:
-        text = _(
-            "Dismissed incident:"
-        )
+        text = _("Dismissed incident:")
     elif incident.status == Incident.Status.PLANNED:
-        text = _(
-            "Planned maintenance (Start {start}):"
-        ).format(
+        text = _("Planned maintenance (Start {start}):").format(
             start=date_format("SHORT_DATETIME_FORMAT", incident.start.astimezone(tz))
         )
     else:
-        text = _(
-            "Ongoing incident:"
-        )
+        text = _("Ongoing incident:")
 
     m = dict(
         text=text,
@@ -53,7 +45,7 @@ def incident_message(incident, alert_message=None):
                     "type": "mrkdwn",
                     "text": "*" + _("Incident title") + ":* " + incident.title,
                 },
-            }
+            },
         ],
     )
 
@@ -168,18 +160,18 @@ def incident_message(incident, alert_message=None):
                 {
                     "type": "mrkdwn",
                     "text": "<%s|%s>"
-                            % (
-                                urljoin(settings.SITE_URL, url_to_edit_object(incident)),
-                                _("Change on admin page"),
-                            ),
+                    % (
+                        urljoin(settings.SITE_URL, url_to_edit_object(incident)),
+                        _("Change on admin page"),
+                    ),
                 },
                 {
                     "type": "mrkdwn",
                     "text": "<%s|%s>"
-                            % (
-                                urljoin(settings.SITE_URL, incident.get_absolute_url()),
-                                _("View on public page"),
-                            ),
+                    % (
+                        urljoin(settings.SITE_URL, incident.get_absolute_url()),
+                        _("View on public page"),
+                    ),
                 },
             ],
         }
@@ -332,13 +324,13 @@ def home_view():
                         "text": {
                             "type": "plain_text",
                             "text": _("Create incident"),
-                            "emoji": True
+                            "emoji": True,
                         },
-                        "action_id": "create_incident"
+                        "action_id": "create_incident",
                     }
-                ]
+                ],
             }
-        ]
+        ],
     }
 
 

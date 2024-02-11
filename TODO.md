@@ -28,7 +28,7 @@
 - [x] Manually create incident from slack
 - [ ] Show message in slack dialogs that subscribers will be notified
 - [ ] Notify subscribers through Rapidmail
-- [ ] Update slack after change on admin page
+- [x] Update slack after change on admin page
 - [ ] Notify subscribers after change on admin page
 - [ ] Install guide incl. API keys
 - [x] Housekeeping

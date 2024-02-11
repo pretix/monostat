@@ -1,10 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import GroupAdmin, UserAdmin
 from django.contrib.auth.models import User, Group
+from django.db import transaction
 from django.utils.translation import gettext_lazy as _
 from solo.admin import SingletonModelAdmin
 
 from .models import Incident, IncidentUpdate, IncomingAlert, SiteConfiguration
+from ..slack.outgoing import on_changed_incident
 
 
 class MonostatAdminSite(admin.AdminSite):
@@ -32,6 +34,14 @@ class IncidentAdmin(admin.ModelAdmin):
     list_display = ["title", "status", "severity", "start", "end"]
     list_filter = ["status", "severity", "start", "end"]
     readonly_fields = ["created", "updated", "slack_message_ts"]
+
+    def save_model(self, request, obj, form, change):
+        r = super().save_model(request, obj, form, change)
+        text = (
+            f'The incident has been updated on the admin page by user "{request.user}".'
+        )
+        transaction.on_commit(lambda: on_changed_incident(obj, text))
+        return r
 
 
 site = MonostatAdminSite(name="admin")

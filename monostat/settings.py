@@ -4,6 +4,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from django.utils.crypto import get_random_string
+from redis import ConnectionPool
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "huey.contrib.djhuey",
     "solo",
     "compressor",
     "monostat.core",
@@ -111,11 +113,15 @@ WSGI_APPLICATION = "monostat.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": DATA_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends." + os.getenv("MONOSTAT_DB_TYPE", "sqlite3"),
+        "NAME": os.getenv("MONOSTAT_DB_NAME", DATA_DIR / "db.sqlite3"),
+        "USER": os.getenv("MONOSTAT_DB_USER", ""),
+        "PASSWORD": os.getenv("MONOSTAT_DB_PASS", ""),
+        "HOST": os.getenv("MONOSTAT_DB_HOST", ""),
+        "PORT": os.getenv("MONOSTAT_DB_PORT", ""),
+        "CONN_MAX_AGE": 0,
     }
 }
 
@@ -250,3 +256,31 @@ CSP_DEFAULT_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'",)
 CSP_FRAME_ANCESTORS = ("'self'",)
 CSP_INCLUDE_NONCE_IN = ["style-src"]
+
+
+pool = ConnectionPool(
+    **{
+        "host": os.getenv("MONOSTAT_REDIS_HOST", "localhost"),
+        "port": int(os.getenv("MONOSTAT_REDIS_PORT", "6379")),
+        "db": int(os.getenv("MONOSTAT_REDIS_DB", "0")),
+        "max_connections": 20,
+    }
+)
+HUEY = {
+    "huey_class": "huey.PriorityRedisExpireHuey",
+    "name": "monostat",
+    "results": True,
+    "store_none": False,
+    "immediate": False,
+    "utc": True,
+    "blocking": True,
+    "connection": {
+        "connection_pool": pool,
+    },
+    "consumer": {
+        "workers": 2,
+        "worker_type": "thread",
+        "check_worker_health": True,
+        "health_check_interval": 1,
+    },
+}

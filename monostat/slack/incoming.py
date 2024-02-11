@@ -6,7 +6,12 @@ from datetime import datetime, timezone
 
 from monostat.core.models import Incident
 from monostat.core.utils.log import log
-from monostat.slack.blocks import incident_message, incident_update_modal, home_view, incident_create_modal
+from monostat.slack.blocks import (
+    incident_message,
+    incident_update_modal,
+    home_view,
+    incident_create_modal,
+)
 from monostat.slack.models import SlackConfiguration
 from monostat.slack.slack_app import app
 from django.utils.translation import gettext as _
@@ -193,7 +198,7 @@ def on_update_incident_modal(ack, body, client, view, logger):
                 new_status=(
                     incident.status
                     if status_changed
-                       or not incident.updates.filter(new_status=incident.status).exists()
+                    or not incident.updates.filter(new_status=incident.status).exists()
                     else None
                 ),
             )
@@ -246,18 +251,13 @@ def on_update_incident_modal(ack, body, client, view, logger):
 @app.event("app_home_opened")
 def on_app_home_opened(ack, payload, client):
     ack()
-    client.views_publish(
-        user_id=payload["user"],
-        view=home_view()
-    )
+    client.views_publish(user_id=payload["user"], view=home_view())
 
 
 @app.action("create_incident")
 def on_create_incident(ack, body, payload, client):
     ack()
-    client.views_open(
-        trigger_id=body["trigger_id"], view=incident_create_modal()
-    )
+    client.views_open(trigger_id=body["trigger_id"], view=incident_create_modal())
 
 
 @app.view("create_incident_modal")
@@ -269,7 +269,9 @@ def on_create_incident_modal(ack, body, client, view, logger):
     user = body["user"]["username"]
     title = view["state"]["values"]["title"]["title"]["value"]
     status = view["state"]["values"]["status"]["status"]["selected_option"]["value"]
-    severity = view["state"]["values"]["severity"]["severity"]["selected_option"]["value"]
+    severity = view["state"]["values"]["severity"]["severity"]["selected_option"][
+        "value"
+    ]
     summary = view["state"]["values"]["summary"]["summary"]["value"]
     start = view["state"]["values"]["start"]["start"]["selected_date_time"]
     ack()
@@ -285,25 +287,22 @@ def on_create_incident_modal(ack, body, client, view, logger):
         log(
             log_user,
             obj=incident,
-            message=_(
-                'Incident created through Slack by user "{user}"'
-            ).format(
+            message=_('Incident created through Slack by user "{user}"').format(
                 user=user,
             ),
             action_flag=ADDITION,
         )
 
     m = client.chat_postMessage(
-        channel=slack_conf.channel_id,
-        **incident_message(incident)
+        channel=slack_conf.channel_id, **incident_message(incident)
     )
     incident.slack_message_ts = m["ts"]
     incident.save(update_fields=["slack_message_ts"])
     client.chat_postMessage(
         channel=slack_conf.channel_id,
         thread_ts=incident.slack_message_ts,
-        text=_(
-            'This incident was created through Slack by user "{user}".'
-        ).format(user=user, severity=incident.get_severity_display()),
+        text=_('This incident was created through Slack by user "{user}".').format(
+            user=user, severity=incident.get_severity_display()
+        ),
     )
     # todo: notify subscribers

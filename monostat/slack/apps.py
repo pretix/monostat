@@ -7,3 +7,4 @@ class SlackApp(AppConfig):
 
     def ready(self):
         from . import incoming  # noqa
+        from . import outgoing  # noqa

@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.admin.models import CHANGE
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
+from huey.contrib.djhuey import db_task
 
 from monostat.core.utils.admin import url_to_edit_object
 from monostat.core.utils.log import log
@@ -12,6 +13,7 @@ from monostat.slack.models import SlackConfiguration
 from monostat.slack.slack_app import app
 
 
+@db_task(priority=50, retries=5)
 def on_new_incident_created_by_alert(incident, alert_message):
     user = User.objects.get_or_create(
         username="_slack", defaults=dict(is_active=False)
@@ -32,13 +34,14 @@ def on_new_incident_created_by_alert(incident, alert_message):
     )
 
 
+@db_task()
 def on_autoresolved_incident(incident):
     slack_conf = SlackConfiguration.get_solo()
     app.client.token = slack_conf.bot_token
     app.client.chat_update(
         channel=slack_conf.channel_id,
         ts=incident.slack_message_ts,
-        **incident_message(incident)
+        **incident_message(incident),
     )
     text = _(
         "This incident has just been dismissed automatically through "
@@ -73,13 +76,14 @@ def on_autoresolved_incident(incident):
     )
 
 
+@db_task(priority=20, retries=5)
 def on_all_alerts_resolved_incident(incident):
     slack_conf = SlackConfiguration.get_solo()
     app.client.token = slack_conf.bot_token
     app.client.chat_update(
         channel=slack_conf.channel_id,
         ts=incident.slack_message_ts,
-        **incident_message(incident)
+        **incident_message(incident),
     )
     app.client.chat_postMessage(
         channel=slack_conf.channel_id,
@@ -94,7 +98,8 @@ def on_all_alerts_resolved_incident(incident):
     )
 
 
-def on_changed_incident(incident):
+@db_task(priority=20, retries=5)
+def on_changed_incident(incident, change_message=None):
     slack_conf = SlackConfiguration.get_solo()
     app.client.token = slack_conf.bot_token
     if incident.slack_message_ts:
@@ -105,8 +110,23 @@ def on_changed_incident(incident):
         )
     else:
         m = app.client.chat_postMessage(
-            channel=slack_conf.channel_id,
-            **incident_message(incident)
+            channel=slack_conf.channel_id, **incident_message(incident)
         )
         incident.slack_message_ts = m["ts"]
         incident.save(update_fields=["slack_message_ts"])
+
+    if change_message:
+        app.client.chat_postMessage(
+            channel=slack_conf.channel_id,
+            thread_ts=incident.slack_message_ts,
+            text=change_message,
+            blocks=[
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": change_message,
+                    },
+                },
+            ],
+        )
