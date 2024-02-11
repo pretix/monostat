@@ -33,7 +33,6 @@ RUN mkdir /static && \
     DJANGO_SETTINGS_MODULE=monostat.settings python3 -m monostat collectstatic --noinput && \
     chmod +x /usr/local/bin/monostat
 
-RUN mkdir /data
 VOLUME /data
 
 EXPOSE 80
