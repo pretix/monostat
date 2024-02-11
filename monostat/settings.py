@@ -273,6 +273,7 @@ pool = ConnectionPool(
         "host": os.getenv("MONOSTAT_REDIS_HOST", "localhost"),
         "port": int(os.getenv("MONOSTAT_REDIS_PORT", "6379")),
         "db": int(os.getenv("MONOSTAT_REDIS_DB", "0")),
+        "password": os.getenv("MONOSTAT_REDIS_PASSWORD", None),
         "max_connections": 20,
     }
 )
