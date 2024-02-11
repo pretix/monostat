@@ -21,7 +21,11 @@
 <header>
     <div class="container">
         <a class="brand" href="{% url "public:index" %}">
-            <img src="{{ config.logo.url }}" height="52" class="logo" alt="{{ config.system_name }}">
+            {% if config.logo %}
+                <img src="{{ config.logo.url }}" height="52" class="logo" alt="{{ config.system_name }}">
+            {% else %}
+                {{ config.system_name }}
+            {% endif %}
             {% trans "System Status" %}
         </a>
         <div class="gap"></div>
