@@ -31,6 +31,7 @@ RUN mkdir /static && \
     pwd && \
     ls -lisah * && \
     DJANGO_SETTINGS_MODULE=monostat.settings python3 -m monostat collectstatic --noinput && \
+    DJANGO_SETTINGS_MODULE=monostat.settings python3 -m monostat compress && \
     chmod +x /usr/local/bin/monostat
 
 VOLUME /data
