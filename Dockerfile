@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y git gettext \
 
 ENV LC_ALL C.UTF-8
 ENV DJANGO_SETTINGS_MODULE=monostat.settings
+ENV MONOSTAT_DATA_DIR /data
 
 COPY docker/monostat.bash /usr/local/bin/monostat
 COPY docker/supervisord /etc/supervisord
@@ -37,6 +38,5 @@ VOLUME /data
 
 EXPOSE 80
 USER monostat
-ENV MONOSTAT_DATA_DIR /data
 ENTRYPOINT ["/usr/local/bin/monostat"]
 CMD ["web"]
