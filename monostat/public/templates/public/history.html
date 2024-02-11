@@ -46,6 +46,14 @@
             </div>
         {% endfor %}
     </div>
+    <p>
+        <strong>{% trans "Legend" %}:</strong>
+        <span class="fa fa-minus-circle color-danger" aria-hidden="true"></span> {% trans "Outage" %}
+        <span class="fa fa-warning color-warning" aria-hidden="true"></span> {% trans "Partial outage" %}
+        <span class="fa fa-bug color-warning" aria-hidden="true"></span> {% trans "Known Bug" %}
+        <span class="fa fa-info-circle color-info" aria-hidden="true"></span> {% trans "Notice" %}
+        <span class="fa fa-wrench color-info" aria-hidden="true"></span> {% trans "Maintenance" %}
+    </p>
     <p class="back-nav">
         <a href="{% url "public:index" %}">{% trans "View current system status" %}</a>
     </p>
