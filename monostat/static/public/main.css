@@ -171,11 +171,15 @@ article.incident .incident-timeline-col:not(.no-line)::after {
     width: 2px;
     background: #ccc;
     position: absolute;
-    height: calc(100%);
+    height: 100%;
     left: 50%;
     margin-left: -1px;
     top: 7px;
     z-index: 100;
+}
+
+article.incident .incident-item:last-child .incident-timeline-col:not(.no-line)::after {
+    height: calc(100% - 7px);
 }
 
 article.incident .incident-header .incident-timeline-col {
@@ -233,12 +237,17 @@ article.incident .incident-content-col p.meta a.detail-link:hover {
     text-decoration: underline;
 }
 
-article.incident .incident-item:last-child .incident-content-col p:last-child {
+article.incident .incident-item .incident-content-col p:last-child {
     margin-bottom: 0;
+}
+article.incident .incident-item .incident-content-col {
+    margin-bottom: 0;
+    padding-bottom: 15px;
 }
 
 article.incident .incident-item:last-child .incident-content-col {
     margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .incident-dismissed {

@@ -44,7 +44,7 @@
     </div>
     {% if incident.status == "suspected" and not incident.summary %}
         <div class="incident-item">
-            <div class="incident-timeline-col">
+            <div class="incident-timeline-col no-line">
             </div>
             <div class="incident-content-col">
                 <p class="secondary">
@@ -54,7 +54,7 @@
         </div>
     {% elif incident.summary %}
         <div class="incident-item">
-            <div class="incident-timeline-col">
+            <div class="incident-timeline-col no-line">
             </div>
             <div class="incident-content-col">
                 {{ incident.summary|rich_text }}
