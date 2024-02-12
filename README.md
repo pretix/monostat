@@ -1,6 +1,6 @@
 # monostat – Highly opinionated minimal status page
 
-This is the status page we use for pretix ([status.pretix.eu](https://status.pretix.eu)).
+This is the status page we use for pretix ([pretixstatus.com](https://pretixstatus.com/)).
 It is tailor-made to our needs and might or might not be useful for others.
 
 ## Opinions
