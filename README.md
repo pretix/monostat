@@ -41,6 +41,10 @@ Therefore, this integrates with a bunch of software that we already use:
 - Slack
 - OpsGenie
 
+## Process flow
+
+![Process flow chart](assets/flow.png)
+
 ## Setup
 
 Requirements:

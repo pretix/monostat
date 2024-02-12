@@ -1,0 +1,46 @@
+@startuml
+|OpsGenie|
+start
+:Alert is created;
+
+|monostat|
+:Incident is created in status "suspected";
+|Slack|
+:Team is asked to confirm incident;
+if (Incident confirmed) then (yes)
+    |monostat|
+    :Incident is set to "confirmed";
+    |Subscriber|
+    :Subscriber is notified;
+    kill;
+else (no)
+    |monostat|
+    :Incident is set to "dismissed";
+    kill;
+endif
+|Slack|
+:Incident updated;
+|monostat|
+:Incident is updated;
+if (Incident status\nhas changed) then (yes)
+    |Subscriber|
+    :Subscriber is notified;
+    kill;
+else (no)
+    |monostat|
+    :No notification;
+    kill;
+endif
+
+|OpsGenie|
+:Alert is closed;
+|Slack|
+:Team is asked to update incident;
+|monostat|
+:Incident is set to "resolved";
+|Subscriber|
+:Subscriber is notified;
+
+|monostat|
+stop
+@enduml
