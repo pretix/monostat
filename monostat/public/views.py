@@ -10,8 +10,10 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (
     TemplateView,
     DetailView,
@@ -193,6 +195,7 @@ class DayView(TemplateView):
         )
 
 
+@method_decorator(csrf_exempt, name="dispatch")
 class UnsubscribeView(DeleteView):
     model = Subscriber
     slug_url_kwarg = "token"
@@ -201,6 +204,14 @@ class UnsubscribeView(DeleteView):
 
     def get_success_url(self):
         return reverse("public:unsubscribe.done")
+
+    def form_valid(self, form):
+        r = super().form_valid(form)
+        if "csrfmiddlewaretoken" not in self.request.POST:
+            # One-click unsubscribe as per https://datatracker.ietf.org/doc/html/rfc8058
+            # does not allow redirects
+            return render(self.request, "public/unsubscribe_done.html")
+        return r
 
 
 class UnsubscribeDoneView(TemplateView):

@@ -77,6 +77,10 @@ def send_notifications(incident_id):
                 f"{from_name} <{settings.MAIL_FROM}>",
                 [subscriber.email],
                 connection=connection,
+                headers={
+                    "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+                    "List-Unsubscribe": f"<{ctx['unsubscribe_url']}>",
+                },
             )
             msg.attach_alternative(body_html, "text/html")
             try:
