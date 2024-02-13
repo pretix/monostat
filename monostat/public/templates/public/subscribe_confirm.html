@@ -7,6 +7,9 @@
     </p>
     <form method="post" action="">
         {% csrf_token %}
+        <p class="secondary">
+            {% trans "I consent to my email address being stored for the sole purpose of sending me notifications about new or changed incidents on this page. I can withdraw my consent at any time by clicking the Unsubscribe link in any of the emails I receive." %}
+        </p>
         <button type="submit" class="button">{% trans "Yes, confirm subscription" %}</button>
     </form>
 {% endblock %}
