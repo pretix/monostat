@@ -4,7 +4,7 @@ A planned maintenance for {{ system }} has been posted.
 {% endblocktrans %}{% elif incident_is_new %}{% blocktrans trimmed with system=conf.system_name %}
 A new incident for {{ system }} has been posted.
 {% endblocktrans %}{% elif incident.status == "resolved" %}{% blocktrans trimmed with system=conf.system_name %}
-A new incident for {{ system }} has been marked as resolved.
+An incident for {{ system }} has been marked as resolved.
 {% endblocktrans %}{% else %}{% blocktrans trimmed with system=conf.system_name %}
 An incident for {{ system }} has been updated.
 {% endblocktrans %}{% endif %}
