@@ -16,11 +16,13 @@
             {% endblocktrans %}
         </p>
     {% endif %}
-    {% for incident in incidents %}
-        {% include "public/fragment_incident_detail.html" %}
-    {% empty %}
-        <p class="secondary">{% trans "Nothing to report." %}</p>
-    {% endfor %}
+    <section class="incident-list">
+        {% for incident in incidents %}
+            {% include "public/fragment_incident_detail.html" %}
+        {% empty %}
+            <p class="secondary">{% trans "Nothing to report." %}</p>
+        {% endfor %}
+    </section>
     <p class="back-nav">
         <a href="{% url "public:index" %}">{% trans "View current system status" %}</a>
     </p>
