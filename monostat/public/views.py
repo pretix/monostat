@@ -187,6 +187,13 @@ class DayView(TemplateView):
                 | Q(end__gte=d_start, end__lte=d_end)
                 | Q(end__gte=d_end, start__lte=d_start)
             ),
+            status__in=(
+                Incident.Status.SUSPECTED,
+                Incident.Status.CONFIRMED,
+                Incident.Status.WATCHING,
+                Incident.Status.PLANNED,
+                Incident.Status.RESOLVED,
+            ),
         ).prefetch_related("updates")
 
         return super().get_context_data(
