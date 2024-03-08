@@ -275,6 +275,7 @@ def on_create_incident_modal(ack, body, client, view, logger):
         "value"
     ]
     summary = view["state"]["values"]["summary"]["summary"]["value"]
+    update_text = view["state"]["values"]["update_text"]["update_text"]["value"]
     start = view["state"]["values"]["start"]["start"]["selected_date_time"]
     ack()
 
@@ -285,6 +286,10 @@ def on_create_incident_modal(ack, body, client, view, logger):
             severity=severity,
             summary=summary or None,
             start=datetime.fromtimestamp(start, timezone.utc) if start else now(),
+        )
+        incident.updates.create(
+            message=update_text,
+            new_status=status,
         )
         log(
             log_user,

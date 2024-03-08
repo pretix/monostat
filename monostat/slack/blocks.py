@@ -455,6 +455,26 @@ def incident_create_modal():
             },
             {
                 "type": "input",
+                "block_id": "update_text",
+                "optional": True,
+                "element": {
+                    "type": "plain_text_input",
+                    "multiline": True,
+                    "placeholder": {
+                        "type": "plain_text",
+                        "text": _("Keep empty to not add a text update"),
+                        "emoji": True,
+                    },
+                    "action_id": "update_text",
+                },
+                "label": {
+                    "type": "plain_text",
+                    "text": _("First update text"),
+                    "emoji": True,
+                },
+            },
+            {
+                "type": "input",
                 "block_id": "summary",
                 "optional": True,
                 "element": {
