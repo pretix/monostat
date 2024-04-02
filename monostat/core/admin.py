@@ -4,6 +4,7 @@ from django.contrib.auth.admin import GroupAdmin, UserAdmin
 from django.contrib.auth.models import User, Group
 from django.db import transaction
 from django.utils.translation import gettext_lazy as _
+from multifactor.admin import MultifactorUserAdmin
 from solo.admin import SingletonModelAdmin
 
 from .models import Incident, IncidentUpdate, IncomingAlert, SiteConfiguration
@@ -58,8 +59,12 @@ class IncidentAdmin(admin.ModelAdmin):
         return r
 
 
+class CustomUserAdmin(UserAdmin, MultifactorUserAdmin):
+    pass
+
+
 site = MonostatAdminSite(name="admin")
 site.register(SiteConfiguration, SiteConfigurationAdmin)
 site.register(Incident, IncidentAdmin)
-site.register(User, UserAdmin)
+site.register(User, CustomUserAdmin)
 site.register(Group, GroupAdmin)

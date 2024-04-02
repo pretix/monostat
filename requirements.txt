@@ -9,3 +9,5 @@ slack_bolt==1.18.*
 huey==2.5.*
 redis==5.0.*
 css-inline==0.13.*
+django-multifactor==0.6.*
+django-decorator-include==3.0

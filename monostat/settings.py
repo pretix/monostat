@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "monostat.opsgenie",
     "monostat.slack",
     "monostat.notifications",
+    "multifactor",
 ]
 
 MIDDLEWARE = [
@@ -294,4 +295,18 @@ HUEY = {
         "check_worker_health": True,
         "health_check_interval": 1,
     },
+}
+
+
+MULTIFACTOR = {
+    'RECHECK': True,  # Invalidate previous authorisations at random intervals
+    'RECHECK_MIN': 3600 * 24 * 2,  # No recheks before this many days
+    'RECHECK_MAX': 3600 * 24 * 14,  # But within this many days
+
+    'FIDO_SERVER_ID': urlparse(SITE_URL).hostname,  # Server ID for FIDO request
+    'FIDO_SERVER_NAME': urlparse(SITE_URL).hostname,  # Human-readable name for FIDO request
+    'TOKEN_ISSUER_NAME': urlparse(SITE_URL).hostname,  # TOTP token issuing name (to be shown in authenticator)
+
+    'FACTORS': ['FIDO2'],
+    'FALLBACKS': {},
 }
