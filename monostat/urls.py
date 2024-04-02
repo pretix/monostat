@@ -1,3 +1,4 @@
+from csp.decorators import csp_update
 from decorator_include import decorator_include
 from django.conf import settings
 from django.conf.urls.static import static
@@ -11,8 +12,18 @@ from monostat.slack import urls as slack_urls
 
 urlpatterns = (
     [
-        path('multifactor/', include('multifactor.urls')),
-        path("admin/", decorator_include(multifactor_protected(factors=0 if settings.DEBUG else 1), site.urls)),
+        path(
+            "multifactor/",
+            decorator_include(
+                csp_update(SCRIPT_SRC="'unsafe-inline' 'self'"), "multifactor.urls"
+            ),
+        ),
+        path(
+            "admin/",
+            decorator_include(
+                multifactor_protected(factors=0 if settings.DEBUG else 1), site.urls
+            ),
+        ),
         path("", include((public_urls, "public"))),
         path("integrations/opsgenie/", include((opsgenie_urls, "opsgenie"))),
         path("integrations/slack/", include((slack_urls, "slack"))),
