@@ -32,6 +32,8 @@ dependencies = [
   "redis==5.0.*",
   "css-inline==0.13.*",
   "psycopg2-binary",
+  "django-multifactor==0.6.*",
+  "django-decorator-include==3.0",
 ]
 
 [tool.setuptools.packages.find]
