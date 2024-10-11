@@ -23,7 +23,7 @@ class RSSFeed(Feed):
         return incident.title
 
     def item_description(self, incident: Incident):
-        return rich_text(incident.summary)
+        return rich_text(incident.summary or "")
 
     def item_pubdate(self, incident: Incident):
         return incident.created
